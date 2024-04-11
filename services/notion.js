@@ -9,14 +9,13 @@ const notion = new Client({
 const database_id = process.env.NOTION_DATABASE_ID
 
 // 수정사항 : 날짜 정보를 Name(text)에서 가져오는 것이 아니라 Date(date)에서 가져올 것
-//           그리고 filter가 올해 1월 1일부터 오늘까지가 되도록 설정
+//           그리고 올해 날짜인 것만 가져오도록 filter 적용
 
 async function getSports() {
 
   // 오늘 날짜와 올해 1월 1일 계산
   const today = new Date();
   const startOfYear = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0]; // ISO 형식으로 변환 후 날짜 부분만 추출
-  const todayFormatted = today.toISOString().split('T')[0]; // ISO 형식으로 변환 후 날짜 부분만 추출
 
   const { results } = await notion.databases.query({
     database_id: `${database_id}`,
@@ -32,7 +31,6 @@ async function getSports() {
           "property": "Date",
           "date": {
             "on_or_after": startOfYear,
-            "on_or_before": todayFormatted
           }
         }
       ]

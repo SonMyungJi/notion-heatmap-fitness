@@ -44,10 +44,9 @@
             const sports = dataSet.map(d => d.sport).filter((value, index, self) => self.indexOf(value) === index);
             const scaleDomain = sports.length ? sports : ['No data'];
 
-            // 오늘 날짜
+            // 오늘 날짜를 기준으로 올해 첫 날을 찾음. ISO 형식으로 변환해 start에 적용될 수 있도록 수정.
             const today = new Date();
-            const startOfYear = new Date(today.getFullYear(), 0, 1);
-            console.log(startOfYear);
+            const startOfYear = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0];
 
             const cal = new CalHeatmap();
             cal.paint({
@@ -79,7 +78,7 @@
 
                 // 오늘 날짜를 기준으로 찾은 올해 연도의 첫 날을 start로 잡음
                 date: {
-                    start: new Date('2024-01-01')
+                    start: startOfYear
                 },
                 range: 12,
                 scale: {
