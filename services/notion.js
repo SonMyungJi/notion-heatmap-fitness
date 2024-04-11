@@ -8,9 +8,9 @@ const notion = new Client({
 
 const database_id = process.env.NOTION_DATABASE_ID
 
-// 수정사항 : 날짜 정보를 Name(text)에서 가져오는 것이 아니라 Date(date)에서 가져올 것
-//           그리고 올해 날짜인 것만 가져오도록 filter 적용
-//           1월 1일 기준으로 작년의 정보가 함께 떠야 하는 경우가 있으므로 12월 25일부터 12월 31일까지의 정보가 함께 조회되도록 수정
+// 수정사항 : Habit Tracker로 변경
+// 1. 요일별로 Checkbox가 있는 상태에서 날짜를 확인할 수 있어야 함. 일요일마다 만들어지는 데이터베이스이기 때문에 해당 날에만 생성일자가 기록됨
+// 2. 완료한 서로 다른 Habit들의 수를 세어서 해당 날짜에 적용될 색의 농담을 결정할 수 있어야 함
 
 async function getSports() {
 
@@ -26,44 +26,63 @@ async function getSports() {
   const { results } = await notion.databases.query({
     database_id: `${database_id}`,
     filter: {
-      "and": [
-        {
-          "property": "Sports",
-          "select": {
-            "is_not_empty": true
-          }
-        },
-        {
-          "or": [
-            {
-              "property": "Date",
-              "date": {
-                "on_or_after": startOfYear,
-              }
-            },
-            {
-              "property": "Date",
-              "date": {
-                "on_or_after": lastYearStart,
-                "on_or_before": lastYearEnd
-              }
+            "property": "SUN",
+            "checkbox": {
+              "is_not": true
             }
-          ]
-          
-        }
-      ]
+          }
+          // {
+          //   "property": "MON",
+          //   "checkbox": {
+          //     "does_not_equal": true
+          //   }
+          // },
+          // {
+          //   "property": "TUE",
+          //   "checkbox": {
+          //     "does_not_equal": true
+          //   }
+          // },
+          // {
+          //   "property": "WED",
+          //   "checkbox": {
+          //     "does_not_equal": true
+          //   }
+          // },
+          // {
+          //   "property": "THR",
+          //   "checkbox": {
+          //     "does_not_equal": true
+          //   }
+          // },
+          // {
+          //   "property": "FRI",
+          //   "checkbox": {
+          //     "does_not_equal": true
+          //   }
+          // },
+          // {
+          //   "property": "SAT",
+          //   "checkbox": {
+          //     "does_not_equal": true
+          //   }
+          // },
+  });
+
+  const habitData = results.map(page => {
+    const createdTime = new Date(page.created_time);
+    const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    const createdDay = createdTime.getDay();
+    const habitValues = [];
+    for (let i = 0; i < 7; i++) {
+      const dayOfWeek = daysOfWeek[(createdDay + i) % 7];
+      const habitValue = page.properties[dayOfWeek].checkbox;
+      habitValues.push({ day: dayOfWeek, value: habitValue });
     }
-  })
+    return { createdTime, habitValues };
+  });
 
-
-  const rawData = results.map(page => {
-    return {
-      "date": new Date(page.properties.Date.date.start),
-      "sport": page.properties.Sports.select.name
-    }
-  })
-
-  return rawData
+  return habitData;
 }
 
 async function getTitle() {
