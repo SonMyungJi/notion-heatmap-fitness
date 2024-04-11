@@ -28,7 +28,7 @@ async function getSports() {
     filter: {
             "property": "SUN",
             "checkbox": {
-              "is_not": true
+              "does_not_equal": true
             }
           }
           // {
