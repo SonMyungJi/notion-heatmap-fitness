@@ -34,11 +34,19 @@
         updateHeading();
     </script>
     <script>
+
+        // 수정사항 : 오늘을 기준으로 해당 연도의 1월부터 12월까지 보여주는 달력으로 바꿈
+        // 따라서 시작 날짜를 2022-12-25이 아니라 올해 연도의 1월 1일로 설정하게 해야 함
+
         async function paintCalendar() {
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
             const sports = dataSet.map(d => d.sport).filter((value, index, self) => self.indexOf(value) === index);
             const scaleDomain = sports.length ? sports : ['No data'];
+
+            // 오늘 날짜를 기준으로 찾은 올해 첫 날
+            const today = new Date();
+            const startOfYear = new Date(today.getFullYear(), 0, 1);
 
             const cal = new CalHeatmap();
             cal.paint({
@@ -67,8 +75,10 @@
                     label: 'D',
                     gutter: 4
                 },
+
+                // 수정해야 하는 부분
                 date: {
-                    start: new Date('2022-12-25'),
+                    start: startOfYear,
                     timezone: 'Europe/Zurich'
                 },
                 range: 12,
