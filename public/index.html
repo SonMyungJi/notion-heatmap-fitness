@@ -44,7 +44,8 @@
             const sports = dataSet.map(d => d.sport).filter((value, index, self) => self.indexOf(value) === index);
             const scaleDomain = sports.length ? sports : ['No data'];
 
-            // 오늘 날짜를 기준으로 올해 첫 날을 찾음
+            // ISO를 사용할 경우 12월달이 맨 앞에 오는 에러 발생
+            // 직접 문자열을 사용하여 올해 첫 날 설정
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
 
@@ -76,7 +77,7 @@
                     gutter: 4
                 },
 
-                // 오늘 날짜를 기준으로 찾은 올해 연도의 첫 날을 start로 잡음
+                // new Date('YYYY-MM-DD') 형식으로 채워야 함
                 date: {
                     start: new Date(startOfYear)
                 },
