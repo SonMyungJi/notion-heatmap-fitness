@@ -44,9 +44,8 @@
             const sports = dataSet.map(d => d.sport).filter((value, index, self) => self.indexOf(value) === index);
             const scaleDomain = sports.length ? sports : ['No data'];
 
-            // 오늘 날짜를 기준으로 찾은 올해 첫 날
+            // 오늘 날짜
             const today = new Date();
-            const startOfYear = new Date(today.getFullYear(), 0, 1);
 
             const cal = new CalHeatmap();
             cal.paint({
@@ -76,10 +75,9 @@
                     gutter: 4
                 },
 
-                // 수정해야 하는 부분
+                // 오늘 날짜를 기준으로 찾은 올해 연도의 첫 날을 start로 잡음
                 date: {
-                    start: startOfYear,
-                    timezone: 'Europe/Zurich'
+                    start: new Date(today.getFullYear(), 0, 1)
                 },
                 range: 12,
                 scale: {
