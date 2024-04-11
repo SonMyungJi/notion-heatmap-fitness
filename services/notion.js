@@ -7,9 +7,16 @@ const notion = new Client({
 })
 
 const database_id = process.env.NOTION_DATABASE_ID
-const today = new Date().toISOString().slice(0, 10)
+
+// 수정사항 : 날짜 정보를 Name(text)에서 가져오는 것이 아니라 Date(date)에서 가져올 것
+//           그리고 filter가 올해 1월 1일부터 오늘까지가 되도록 설정
 
 async function getSports() {
+
+  // 오늘 날짜와 올해 1월 1일 계산
+  const today = new Date();
+  const startOfYear = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0]; // ISO 형식으로 변환 후 날짜 부분만 추출
+  const todayFormatted = today.toISOString().split('T')[0]; // ISO 형식으로 변환 후 날짜 부분만 추출
 
   const { results } = await notion.databases.query({
     database_id: `${database_id}`,
@@ -22,20 +29,11 @@ async function getSports() {
           }
         },
         {
-          "or": [
-            {
-              "property": "Name",
-              "rich_text": {
-                "starts_with": '2023'
-              }
-            },
-            {
-              "property": "Name",
-              "rich_text": {
-                "starts_with": '2022'
-              }
-            }
-          ]
+          "property": "Date",
+          "date": {
+            "on_or_after": startOfYear,
+            "on_or_before": todayFormatted
+          }
         }
       ]
     }
@@ -44,7 +42,7 @@ async function getSports() {
 
   const rawData = results.map(page => {
     return {
-      "date": new Date(page.properties.Name.title[0].text.content),
+      "date": new Date(page.properties.Date.date.start),
       "sport": page.properties.Sports.select.name
     }
   })
