@@ -46,7 +46,7 @@
 
             // 오늘 날짜를 기준으로 올해 첫 날을 찾음. ISO 형식으로 변환해 start에 적용될 수 있도록 수정.
             const today = new Date();
-            const startOfYear = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0];
+            const startOfYear = `${today.getFullYear()}-01-01`;
 
             const cal = new CalHeatmap();
             cal.paint({
@@ -78,7 +78,7 @@
 
                 // 오늘 날짜를 기준으로 찾은 올해 연도의 첫 날을 start로 잡음
                 date: {
-                    start: startOfYear
+                    start: new Date(startOfYear)
                 },
                 range: 12,
                 scale: {
