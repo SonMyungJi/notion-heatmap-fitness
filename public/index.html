@@ -46,6 +46,8 @@
 
             // 오늘 날짜
             const today = new Date();
+            const startOfYear = new Date(today.getFullYear(), 0, 1);
+            console.log(startOfYear);
 
             const cal = new CalHeatmap();
             cal.paint({
@@ -77,7 +79,7 @@
 
                 // 오늘 날짜를 기준으로 찾은 올해 연도의 첫 날을 start로 잡음
                 date: {
-                    start: new Date(today.getFullYear(), 0, 1)
+                    start: new Date('2024-01-01')
                 },
                 range: 12,
                 scale: {
