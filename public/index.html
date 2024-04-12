@@ -49,6 +49,10 @@
             cal.paint({
                 data: {
                     source: dataSet,
+                    type: "json",
+                    x: "date",
+                    y: "sport",
+                    groupY: d => d[0]
                 },
                 domain: {
                     type: 'month',
@@ -99,10 +103,7 @@
                         itemSelector: '#legend-label',
                     },
                 ],
-            ], function(date, sport) {
-                // value가 1이면 해당 날짜에 색을 칠함
-                return sport === 1 ? 'A' : '#FFFFFF'; // 'A'는 색상 코드, 여기서는 'Spectral' 스케일에서 가장 어두운 색상을 사용
-            });
+            ]);
         }        
 
         paintCalendar();
