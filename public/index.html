@@ -39,32 +39,69 @@
         async function paintCalendar() {
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
-
-            // Sports가 true인, date의 값만 있는 배열
-            const dates = dataSet.filter(d => d.sport).map(d => d.date);
-
+        
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
-
+        
             const cal = new CalHeatmap();
-            cal.init({
-                data: dates, // 수정: dates 배열을 전달하여 색칠할 날짜를 지정
-                domain: 'month',
-                subDomain: 'day',
-                cellSize: 15,
-                cellPadding: 4,
-                domainGutter: 8,
+            cal.paint({
+                data: {
+                    source: dataSet,
+                },
+                domain: {
+                    type: 'month',
+                    gutter: 8,
+                    label: {text: 'MMM', textAlign: 'middle', position: 'top'},
+                    subLabel: {
+                        width: 40,
+                        textAlign: 'middle',
+                        text: () => dayjs.weekdaysShort().map((d, i) => (i % 2 == 0 ? d : d)),
+                    },
+                },
+                subDomain: {
+                    type: 'ghDay',
+                    radius: 2,
+                    width: 15,
+                    height: 15,
+                    label: 'D',
+                    gutter: 4
+                },
+                date: {
+                    start: new Date(startOfYear)
+                },
                 range: 12,
-                start: new Date(startOfYear),
-                legend: [1, 2, 3, 4],
-                itemName: ['activity', 'activities'],
-                subDomainTextFormat: "%d",
-                displayLegend: true,
-                legendCellSize: 15,
-                legendVerticalPosition: "bottom",
-                tooltip: true
+                scale: {
+                    color: {
+                        domain: ['A'],
+                        type: 'ordinal',
+                        scheme: 'Spectral',
+                    }
+                }
+            }, [
+                [
+                    Tooltip,
+                    {
+                        text: function (date, value, dayjsDate) {
+                            return (
+                                (value ? value : 'No data') +
+                                ' on ' +
+                                dayjsDate.format('LL')
+                            );
+                        },
+                    },
+                ],
+                [
+                    Legend,
+                    {
+                        width: 400,
+                        itemSelector: '#legend-label',
+                    },
+                ],
+            ], function(date, value) {
+                // value가 1이면 해당 날짜에 색을 칠함
+                return value === 1 ? 'A' : '#FFFFFF'; // 'A'는 색상 코드, 여기서는 'Spectral' 스케일에서 가장 어두운 색상을 사용
             });
-        }
+        }        
 
         paintCalendar();
     </script>
