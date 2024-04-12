@@ -35,17 +35,15 @@
     </script>
     <script>
 
-        // 수정사항 : 오늘을 기준으로 해당 연도의 1월부터 12월까지 보여주는 달력으로 바꿈
-        // 따라서 시작 날짜를 2022-12-25이 아니라 올해 연도의 1월 1일로 설정하게 해야 함
+        // 수정사항 : Sports가 true인 날짜들이 달력에 표시되도록 수정
 
         async function paintCalendar() {
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
-            const sports = dataSet.map(d => d.sport).filter((value, index, self) => self.indexOf(value) === index);
-            const scaleDomain = sports.length ? sports : ['No data'];
 
-            // ISO를 사용할 경우 12월달이 맨 앞에 오는 에러 발생
-            // 직접 문자열을 사용하여 올해 첫 날 설정
+            // Sports가 true인, date의 값만 있는 배열
+            const dates = dataSet.filter(d => d.sport).map(d => d.date);
+
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
 
@@ -56,7 +54,9 @@
                     type: "json",
                     x: "date",
                     y: "sport",
-                    groupY: d => d[0]
+                    getValue: function (date, data) {
+                        return dates.includes(date) ? 1 : 0; // dates 배열에 포함된 날짜는 1로 설정
+                    }
                 },
                 domain: {
                     type: 'month',
@@ -76,15 +76,13 @@
                     label: 'D',
                     gutter: 4
                 },
-
-                // new Date('YYYY-MM-DD') 형식으로 채워야 함
                 date: {
                     start: new Date(startOfYear)
                 },
                 range: 12,
                 scale: {
                     color: {
-                        domain: scaleDomain,
+                        domain: ['No data', 'Sport'],
                         type: 'ordinal',
                         scheme: 'Spectral',
                     }
