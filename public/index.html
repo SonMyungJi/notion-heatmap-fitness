@@ -40,7 +40,7 @@
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
 
-            console.log(dataSet);
+            const scaleDomain = ['1'];
         
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
@@ -78,7 +78,7 @@
                 range: 12,
                 scale: {
                     color: {
-                        domain: ['1'],
+                        domain: scaleDomain,
                         type: 'ordinal',
                         scheme: 'Spectral',
                     }
