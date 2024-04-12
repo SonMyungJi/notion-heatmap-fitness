@@ -87,9 +87,9 @@
                 [
                     Tooltip,
                     {
-                        text: function (date, sport, dayjsDate) {
+                        text: function (date, value, dayjsDate) {
                             return (
-                                (sport ? sport : 'No data') +
+                                (value ? value : 'No data') +
                                 ' on ' +
                                 dayjsDate.format('LL')
                             );
