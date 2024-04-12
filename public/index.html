@@ -48,12 +48,9 @@
                 data: {
                     source: dataSet,
                     type: "json",
-                    // boolean값이 true인 데이터만 필터링
-                    filter: function (datum) {
-                        return datum.sport === true;
-                    },
                     x: "date",
-                    y: "sport"
+                    y: "sport",
+                    groupY: d => d[0]
                 },
                 domain: {
                     type: 'month',

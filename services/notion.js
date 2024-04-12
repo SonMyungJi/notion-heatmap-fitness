@@ -53,9 +53,10 @@ async function getSports() {
 
 
   const rawData = results.map(page => {
+    const sportValue = page.properties.Sports.checkbox.checked ? page.properties.Sports.select.name : false;
     return {
       "date": new Date(page.properties.Date.date.start),
-      "sport": page.properties.Sports.checkbox.checked
+      "sport": sportValue
     }
   })
 
