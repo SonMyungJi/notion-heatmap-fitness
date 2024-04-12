@@ -35,29 +35,27 @@
     </script>
     <script>
 
-        // 수정사항 : 오늘을 기준으로 해당 연도의 1월부터 12월까지 보여주는 달력으로 바꿈
-        // 따라서 시작 날짜를 2022-12-25이 아니라 올해 연도의 1월 1일로 설정하게 해야 함
+        // 수정사항 : Sports가 checked된 날짜만 표시되어야 함
 
         async function paintCalendar() {
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
-            const sports = dataSet.map(d => d.sport).filter((value, index, self) => self.indexOf(value) === index);
-            const scaleDomain = sports.length ? sports : ['No data'];
 
-            // ISO를 사용할 경우 12월달이 맨 앞에 오는 에러 발생
-            // 직접 문자열을 사용하여 올해 첫 날 설정
+            // Sports가 checked된 날짜만 필터링
+            const filteredData = dataSet.filter(d => d.sport);
+            const scaleDomain = ['No data', 'Sport'];
+
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
 
             const cal = new CalHeatmap();
             cal.paint({
-                data: {
-                    source: dataSet,
-                    type: "json",
-                    x: "date",
-                    y: "sport",
-                    groupY: d => d[0]
-                },
+
+                // UNIX 타임스탬프로 표현하여 저장
+                data: filteredData.reduce((acc, cur) => {
+                    acc[Math.floor(new Date(cur.date).getTime() / 1000)] = 1;
+                    return acc;
+                }, {}),
                 domain: {
                     type: 'month',
                     gutter: 8,
@@ -76,8 +74,6 @@
                     label: 'D',
                     gutter: 4
                 },
-
-                // new Date('YYYY-MM-DD') 형식으로 채워야 함
                 date: {
                     start: new Date(startOfYear)
                 },
@@ -89,27 +85,7 @@
                         scheme: 'Spectral',
                     }
                 }
-            }, [
-                [
-                    Tooltip,
-                    {
-                        text: function (date, value, dayjsDate) {
-                            return (
-                                (value ? value : 'No data') +
-                                ' on ' +
-                                dayjsDate.format('LL')
-                            );
-                        },
-                    },
-                ],
-                [
-                    Legend,
-                    {
-                        width: 400,
-                        itemSelector: '#legend-label',
-                    },
-                ],
-            ]);
+            });
         }
 
         paintCalendar();
