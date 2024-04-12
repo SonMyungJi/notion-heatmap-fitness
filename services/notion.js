@@ -12,6 +12,8 @@ const database_id = process.env.NOTION_DATABASE_ID
 //           그리고 올해 날짜인 것만 가져오도록 filter 적용
 //           1월 1일 기준으로 작년의 정보가 함께 떠야 하는 경우가 있으므로 12월 25일부터 12월 31일까지의 정보가 함께 조회되도록 수정
 
+// 수정사항 : 체크박스의 값에 따라 색이 바뀌도록 수정
+
 async function getSports() {
 
   // 오늘 날짜와 올해 1월 1일 계산
@@ -29,8 +31,8 @@ async function getSports() {
       "and": [
         {
           "property": "Sports",
-          "select": {
-            "is_not_empty": true
+          "checkbox": {
+            "equal": true
           }
         },
         {
@@ -59,7 +61,7 @@ async function getSports() {
   const rawData = results.map(page => {
     return {
       "date": new Date(page.properties.Date.date.start),
-      "sport": page.properties.Sports.select.name
+      "sportChecked": page.properties.Sports.checkbox
     }
   })
 

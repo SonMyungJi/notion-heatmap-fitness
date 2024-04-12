@@ -38,80 +38,48 @@
         // 수정사항 : 오늘을 기준으로 해당 연도의 1월부터 12월까지 보여주는 달력으로 바꿈
         // 따라서 시작 날짜를 2022-12-25이 아니라 올해 연도의 1월 1일로 설정하게 해야 함
 
+        // 수정사항 : Sports의 체크박스 값에 따라 색이 바뀌도록 수정
+
         async function paintCalendar() {
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
-            const sports = dataSet.map(d => d.sport).filter((value, index, self) => self.indexOf(value) === index);
-            const scaleDomain = sports.length ? sports : ['No data'];
-
-            // ISO를 사용할 경우 12월달이 맨 앞에 오는 에러 발생
-            // 직접 문자열을 사용하여 올해 첫 날 설정
-            const today = new Date();
-            const startOfYear = `${today.getFullYear()}-01-01`;
-
+    
+            // Filter out entries where the 'Sports' checkbox is not true
+            const filteredData = dataSet.filter(d => d.sportChecked);
+    
+            // Create an object to map dates to their sport status for the calendar
+            const dataForCalendar = filteredData.reduce((acc, item) => {
+                const dateStr = item.date.toISOString().split('T')[0]; // Convert Date to YYYY-MM-DD format
+                acc[dateStr] = item.sportChecked ? 1 : 0; // Use 1 for true, 0 for false
+                return acc;
+            }, {});
+    
             const cal = new CalHeatmap();
             cal.paint({
-                data: {
-                    source: dataSet,
-                    type: "json",
-                    x: "date",
-                    y: "sport",
-                    groupY: d => d[0]
-                },
-                domain: {
-                    type: 'month',
-                    gutter: 8,
-                    label: {text: 'MMM', textAlign: 'middle', position: 'top'},
-                    subLabel: {
-                        width: 40,
-                        textAlign: 'middle',
-                        text: () => dayjs.weekdaysShort().map((d, i) => (i % 2 == 0 ? d : d)),
-                    },
-                },
-                subDomain: {
-                    type: 'ghDay',
-                    radius: 2,
-                    width: 15,
-                    height: 15,
-                    label: 'D',
-                    gutter: 4
-                },
-
-                // new Date('YYYY-MM-DD') 형식으로 채워야 함
-                date: {
-                    start: new Date(startOfYear)
-                },
+                data: dataForCalendar,
+                start: new Date(`${new Date().getFullYear()}-01-01`),
+                domain: "month",
+                subDomain: "day",
                 range: 12,
-                scale: {
-                    color: {
-                        domain: scaleDomain,
-                        type: 'ordinal',
-                        scheme: 'Spectral',
-                    }
-                }
-            }, [
-                [
-                    Tooltip,
-                    {
-                        text: function (date, value, dayjsDate) {
-                            return (
-                                (value ? value : 'No data') +
-                                ' on ' +
-                                dayjsDate.format('LL')
-                            );
-                        },
-                    },
-                ],
-                [
-                    Legend,
-                    {
-                        width: 400,
-                        itemSelector: '#legend-label',
-                    },
-                ],
-            ]);
+                cellSize: 15,
+                cellPadding: 5,
+                cellRadius: 5,
+                domainGutter: 10,
+                domainLabelFormat: "%B %Y",
+                subDomainTitleFormat: {
+                    empty: "No data on {date}",
+                    filled: "Sports on {date}",
+                },
+                legend: [1],
+                legendColors: {
+                    min: "#efefef",
+                    max: "steelblue",
+                    empty: "white"
+                },
+                tooltip: true
+            });
         }
-
+    
         paintCalendar();
     </script>
 </body>
