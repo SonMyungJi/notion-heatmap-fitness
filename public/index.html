@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/cal-heatmap/dist/plugins/Legend.min.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/cal-heatmap/dist/plugins/Tooltip.min.js"></script>
+    <script src="./js/main.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Fitness Tracker</title>
 </head>
@@ -40,19 +41,21 @@
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
 
+            // Sports가 true인, date의 값만 있는 배열
+            const dates = dataSet.filter(d => d.sport).map(d => d.date);
+
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
 
             const cal = new CalHeatmap();
             cal.paint({
                 data: {
-                    source: dataSet,
+                    source: datas.map(date => ({ date, sport: 'Sport' })), // dates 배열에서 각 날짜를 가져와서 'Sport'로 고정된 데이터 설정
                     type: "json",
                     x: "date",
                     y: "sport",
-                    groupY:d => d[0],
                     getValue: function (date, data) {
-                        return data.sport ? 1 : 0;
+                        return 1; // 모든 데이터를 1로 설정하여 해당 날짜에 색상이 표시되도록 함
                     }
                 },
                 domain: {
@@ -62,7 +65,7 @@
                     subLabel: {
                         width: 40,
                         textAlign: 'middle',
-                        text: () => ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+                        text: () => dayjs.weekdaysShort().map((d, i) => (i % 2 == 0 ? d : d)),
                     },
                 },
                 subDomain: {
@@ -92,7 +95,7 @@
                             return (
                                 (value ? value : 'No data') +
                                 ' on ' +
-                                dayjsDate.toDateString()
+                                dayjsDate.format('LL')
                             );
                         },
                     },
