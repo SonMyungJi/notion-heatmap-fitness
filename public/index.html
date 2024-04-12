@@ -39,71 +39,31 @@
         async function paintCalendar() {
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
-            const sports = dataSet.map(d => d.sport).filter((value, index, self) => self.indexOf(value) === index);
-            const scaleDomain = sports.length ? sports : ['No data'];
+
+            // Sports가 true인, date의 값만 있는 배열
+            const dates = dataSet.filter(d => d.sport).map(d => d.date);
 
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
 
             const cal = new CalHeatmap();
-            cal.paint({
-                data: {
-                    source: dataSet,
-                    type: "json",
-                    x: "date",
-                    y: "sport",
-                    groupY: d => d[0]
-                },
-                domain: {
-                    type: 'month',
-                    gutter: 8,
-                    label: {text: 'MMM', textAlign: 'middle', position: 'top'},
-                    subLabel: {
-                        width: 40,
-                        textAlign: 'middle',
-                        text: () => dayjs.weekdaysShort().map((d, i) => (i % 2 == 0 ? d : d)),
-                    },
-                },
-                subDomain: {
-                    type: 'ghDay',
-                    radius: 2,
-                    width: 15,
-                    height: 15,
-                    label: 'D',
-                    gutter: 4
-                },
-                date: {
-                    start: new Date(startOfYear)
-                },
+            cal.init({
+                data: dates, // 수정: dates 배열을 전달하여 색칠할 날짜를 지정
+                domain: 'month',
+                subDomain: 'day',
+                cellSize: 15,
+                cellPadding: 4,
+                domainGutter: 8,
                 range: 12,
-                scale: {
-                    color: {
-                        domain: scaleDomain,
-                        type: 'ordinal',
-                        scheme: 'Spectral',
-                    }
-                }
-            }, [
-                [
-                    Tooltip,
-                    {
-                        text: function (date, value, dayjsDate) {
-                            return (
-                                (value ? value : 'No data') +
-                                ' on ' +
-                                dayjsDate.format('LL')
-                            );
-                        },
-                    },
-                ],
-                [
-                    Legend,
-                    {
-                        width: 400,
-                        itemSelector: '#legend-label',
-                    },
-                ],
-            ]);
+                start: new Date(startOfYear),
+                legend: [1, 2, 3, 4],
+                itemName: ['activity', 'activities'],
+                subDomainTextFormat: "%d",
+                displayLegend: true,
+                legendCellSize: 15,
+                legendVerticalPosition: "bottom",
+                tooltip: true
+            });
         }
 
         paintCalendar();
