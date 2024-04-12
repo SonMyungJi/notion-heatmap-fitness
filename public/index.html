@@ -40,7 +40,8 @@
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
 
-            const scaleDomain = ['1'];
+            const sports = dataSet.map(d => d.sport).filter((value, index, self) => self.indexOf(value) === index);
+            const scaleDomain = sports.length ? sports : ['No data'];
         
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
