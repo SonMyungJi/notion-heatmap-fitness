@@ -35,27 +35,24 @@
     </script>
     <script>
 
-        // 수정사항 : Sports가 checked된 날짜만 표시되어야 함
+        // 수정사항 : Sports가 true인 날짜들이 달력에 표시되도록 수정
 
         async function paintCalendar() {
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
-
-            // Sports가 checked된 날짜만 필터링
-            const filteredData = dataSet.filter(d => d.sport);
-            const scaleDomain = ['No data', 'Sport'];
 
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
 
             const cal = new CalHeatmap();
             cal.paint({
-
-                // UNIX 타임스탬프로 표현하여 저장
-                data: filteredData.reduce((acc, cur) => {
-                    acc[Math.floor(new Date(cur.date).getTime() / 1000)] = 1;
-                    return acc;
-                }, {}),
+                data: {
+                    source: dataSet,
+                    type: "json",
+                    getValue: function (date, data) {
+                        return data.sport ? 1 : 0;
+                    }
+                },
                 domain: {
                     type: 'month',
                     gutter: 8,
@@ -80,12 +77,32 @@
                 range: 12,
                 scale: {
                     color: {
-                        domain: scaleDomain,
+                        domain: ['No data', 'Sport'],
                         type: 'ordinal',
                         scheme: 'Spectral',
                     }
                 }
-            });
+            }, [
+                [
+                    Tooltip,
+                    {
+                        text: function (date, value, dayjsDate) {
+                            return (
+                                (value ? value : 'No data') +
+                                ' on ' +
+                                dayjsDate.format('LL')
+                            );
+                        },
+                    },
+                ],
+                [
+                    Legend,
+                    {
+                        width: 400,
+                        itemSelector: '#legend-label',
+                    },
+                ],
+            ]);
         }
 
         paintCalendar();
