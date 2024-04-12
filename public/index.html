@@ -8,7 +8,6 @@
     <script src="https://unpkg.com/cal-heatmap/dist/plugins/Legend.min.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/cal-heatmap/dist/plugins/Tooltip.min.js"></script>
-    <script src="./js/main.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Fitness Tracker</title>
 </head>
@@ -49,6 +48,9 @@
                 data: {
                     source: dataSet,
                     type: "json",
+                    x: "date",
+                    y: "sport",
+                    groupY:d => d[0],
                     getValue: function (date, data) {
                         return data.sport ? 1 : 0;
                     }
@@ -60,7 +62,7 @@
                     subLabel: {
                         width: 40,
                         textAlign: 'middle',
-                        text: () => dayjs.weekdaysShort().map((d, i) => (i % 2 == 0 ? d : d)),
+                        text: () => ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
                     },
                 },
                 subDomain: {
@@ -90,7 +92,7 @@
                             return (
                                 (value ? value : 'No data') +
                                 ' on ' +
-                                dayjsDate.format('LL')
+                                dayjsDate.toDateString()
                             );
                         },
                     },
