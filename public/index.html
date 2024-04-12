@@ -53,7 +53,7 @@
                     source: dataSet,
                     type: "json",
                     x: "date",
-                    y: "sport",
+                    y: "date",
                     getValue: function (date, data) {
                         return dates.includes(date) ? 1 : 0; // dates 배열에 포함된 날짜는 1로 설정
                     }
@@ -82,7 +82,7 @@
                 range: 12,
                 scale: {
                     color: {
-                        domain: ['No data', 'Sport'],
+                        // domain: ['Sport'],
                         type: 'ordinal',
                         scheme: 'Spectral',
                     }
