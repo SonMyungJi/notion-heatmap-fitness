@@ -50,7 +50,7 @@
             const cal = new CalHeatmap();
             cal.paint({
                 data: {
-                    source: dates.map(d => ({ date, sport: 'Sport' })), // dates 배열에서 각 날짜를 가져와서 'Sport'로 고정된 데이터 설정
+                    source: dates.map(date => ({ date, sport: 'Sport' })), // dates 배열에서 각 날짜를 가져와서 'Sport'로 고정된 데이터 설정
                     type: "json",
                     x: "date",
                     y: "sport",
