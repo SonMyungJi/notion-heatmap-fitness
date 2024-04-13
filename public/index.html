@@ -110,7 +110,7 @@
                     {
                         text: function (date, value, dayjsDate) {
                             return (
-                                (value !== undefined ? value : 'No data') +
+                                (value !== null && value !== undefined ? value : 'No data') +
                                 ' on ' +
                                 dayjsDate.format('LL')
                             );
