@@ -63,8 +63,6 @@
                 };
             });
 
-            console.log(aggregatedArray);
-
             const maxSum = Math.max(...aggregatedArray.map(item => item.sum));
         
             const cal = new CalHeatmap();
@@ -110,7 +108,7 @@
                     {
                         text: function (date, value, dayjsDate) {
                             return (
-                                (value !== null && value !== undefined ? value : 'No data') +
+                                (value.toString() ? value : 'No data') +
                                 ' on ' +
                                 dayjsDate.format('LL')
                             );
