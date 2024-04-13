@@ -43,7 +43,18 @@
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
 
-            const maxSunCount = dataSet.reduce((max, data) => Math.max(max, data.date), 0);
+            // 날짜를 기준으로 데이터 그룹화 및 sun 값 합산
+            const groupedData = {};
+            dataSet.forEach(data => {
+                const date = data.date.split('T')[0]; // 날짜만 추출
+                if (!groupedData[date]) {
+                    groupedData[date] = 0;
+                }
+                groupedData[date] += data.sun;
+            });
+
+            // 최대 sun 값 구하기
+            const maxSunCount = Object.values(groupedData).reduce((max, sum) => Math.max(max, sum), 0);
         
             const cal = new CalHeatmap();
             cal.paint({
