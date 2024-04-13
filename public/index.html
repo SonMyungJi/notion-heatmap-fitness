@@ -41,14 +41,18 @@
             const dataSet = await response.json();
 
             const aggregatedData = {};
+            const today = new Date();
+            const startOfYear = new Date(today.getFullYear(), 0, 1);
+            const endOfYear = new Date(today.getFullYear(), 11, 31);
+
+            for (let d = new Date(startOfYear); d <= endOfYear; d.setDate(d.getDate() + 1)) {
+                aggregatedData[d.toISOString().split('T')[0]] = 0;
+            }
+
             dataSet.forEach(item => {
-                const date = item.date;
+                const date = item.date.split('T')[0];
                 const sun = item.sun;
-                if (aggregatedData[date]) {
-                    aggregatedData[date] += sun;
-                } else {
-                    aggregatedData[date] = sun;
-                }
+                aggregatedData[date] += sun;
             });
 
             const aggregatedArray = Object.keys(aggregatedData).map(date => {
@@ -58,12 +62,7 @@
                 };
             });
 
-            console.log(aggregatedArray);
-
             const maxSum = Math.max(...aggregatedArray.map(item => item.sum));
-        
-            const today = new Date();
-            const startOfYear = `${today.getFullYear()}-01-01`;
         
             const cal = new CalHeatmap();
             cal.paint({
