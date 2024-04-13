@@ -76,7 +76,7 @@
                 scale: {
                     color: {
                       scheme: 'Greens',
-                      type: 'linear',
+                      type: 'quantile',
                       domain: [0, d3.max(dataSet, d => d.groupY)],
                     }
                   },
@@ -86,7 +86,7 @@
                     {
                         text: function (date, value, dayjsDate) {
                             return (
-                                (value && value > 0 ? (value - 1) : 'No data') +
+                                (value ? value : 'No data') +
                                 ' on ' +
                                 dayjsDate.format('LL')
                             );
