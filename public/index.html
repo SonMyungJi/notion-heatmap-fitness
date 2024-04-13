@@ -76,7 +76,7 @@
                 scale: {
                     color: {
                       scheme: 'Greens',
-                      type: 'quantize', 
+                      type: 'linear', 
                       domain: dataSet.map(d => d.sun), 
                     }
                   },
@@ -91,6 +91,13 @@
                                 dayjsDate.format('LL')
                             );
                         },
+                    },
+                ],
+                [
+                    Legend,
+                    {
+                        width: 400,
+                        itemSelector: '#legend-label',
                     },
                 ],
             ]);
