@@ -8,7 +8,7 @@ const notion = new Client({
 
 const database_id = process.env.NOTION_DATABASE_ID
 
-// 수정사항 : "Sports"의 type을 select에서 checkbox로 변경
+// 수정사항 : "SUN"이라는 checkbox의 체크여부에 따라 데이터 가져오기
 
 async function getSports() {
 
@@ -23,8 +23,14 @@ async function getSports() {
     database_id: `${database_id}`,
     filter: {
       "and": [
+        // {
+        //   "property": "Sports",
+        //   "select": {
+        //     "is_not_empty": true
+        //   }
+        // },
         {
-          "property": "Sports",
+          "property": "SUN",
           "checkbox": {
             "equals": true
           }
@@ -55,7 +61,8 @@ async function getSports() {
   const rawData = results.map(page => {
     return {
       "date": new Date(page.properties.Date.date.start),
-      "sport": page.properties.Sports.checkbox ? 1 : 0
+      // "sport": page.properties.Sports.select.name,
+      "sun": page.properties.SUN.checkbox ? 1 : 0 // notion에서 반환하는 체크된 checkbox의 값은 Yes이다
     }
   })
 
