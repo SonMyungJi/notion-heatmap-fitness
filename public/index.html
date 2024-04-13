@@ -76,9 +76,10 @@
                 range: 12,
                 scale: {
                     sun: {
-                        scale: ['rgba(0,0,0,0)', '#007f0e', '#71b747'],
-                        domain: [0, 1, 2], // sun 값이 0부터 2까지
-                    }
+                        baseColor: '#71b747',
+                        type: 'linear',
+                        domain: [0, 2],
+                      },
                   },
             }, [
                 [
