@@ -76,8 +76,8 @@
                 scale: {
                     color: {
                       scheme: 'Greens',
-                      type: 'linear',
-                      domain: [0, d3.max(dataSet, d => d.groupY)],
+                      type: 'quantize', 
+                      domain: dataSet.map(d => d.sun), 
                     }
                   },
             }, [
