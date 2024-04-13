@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/cal-heatmap/dist/cal-heatmap.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/cal-heatmap/dist/cal-heatmap.css"></link>
+    <link rel="stylesheet" href="https://unpkg.com/cal-heatmap/dist/cal-heatmap.css">
+    <script src="https://unpkg.com/cal-heatmap/dist/plugins/Legend.min.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/cal-heatmap/dist/plugins/Tooltip.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Fitness Tracker</title>
 </head>
+
 <body>
     <h1 id="plotTitle" class="text-3xl font-bold underline text-center">
         Title
@@ -19,45 +22,94 @@
         async function updateHeading() {
             const response = await fetch('/api/title');
             const title = await response.json();
+
             const heading = document.getElementById("plotTitle");
+
             if (title) {
                 heading.innerText = title;
             }
         }
 
         updateHeading();
+    </script>
+    <script>
+
+        // 수정사항 : 특정 날짜의 체크된 SUN 수에 따라 서로 다른 색 칠하기
 
         async function paintCalendar() {
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
-
-            const datesCounts = dataSet.reduce((acc, cur) => {
-                const dateKey = new Date(cur.date).getTime() / 1000; // UNIX timestamp
-                if (cur.sun) {
-                    acc[dateKey] = (acc[dateKey] || 0) + 1;
-                }
-                return acc;
-            }, {});
-
+        
+            const today = new Date();
+            const startOfYear = `${today.getFullYear()}-01-01`;
+        
             const cal = new CalHeatmap();
             cal.paint({
-                itemSelector: "#cal-heatmap",
-                domain: "month",
-                subDomain: "day",
-                data: datesCounts,
-                start: new Date(new Date().getFullYear(), 0),
+                data: {
+                    source: dataSet,
+                    type: "json",
+                    x: "date",
+                    y: "sun",
+                    groupY: 'sum'
+                },
+                domain: {
+                    type: 'month',
+                    gutter: 8,
+                    label: {text: 'MMM', textAlign: 'middle', position: 'top'},
+                    subLabel: {
+                        width: 40,
+                        textAlign: 'middle',
+                        text: () => dayjs.weekdaysShort().map((d, i) => (i % 2 == 0 ? d : d)),
+                    },
+                },
+                subDomain: {
+                    type: 'ghDay',
+                    radius: 2,
+                    width: 15,
+                    height: 15,
+                    label: 'D',
+                    gutter: 4
+                },
+                date: {
+                    start: new Date(startOfYear)
+                },
                 range: 12,
-                domainGutter: 10,
-                tooltip: true,
-                scale: [0, 1, 2, 3, 4, 5],
-                scaleColors: ["#FFFFFF", "#E0F2F1", "#B2DFDB", "#80CBC4", "#4DB6AC", "#00897B"],
-                onClick: function(date, value) {
-                    console.log(`Clicked on ${date} with value ${value}`);
-                }
-            });
-        }
+                scale: {
+                    opacity: {
+                      baseColor: '#71b747',
+                      type: 'linear',
+                      domain: [0, 30],
+                    },
+                    sun: {
+                        scale: ['#f0fff4', '#007f0e'], // 옅은 초록에서 진한 초록으로 매핑
+                        domain: [0, 5], // sun 값이 0부터 5까지
+                    }
+                  },
+            }, [
+                [
+                    Tooltip,
+                    {
+                        text: function (date, value, dayjsDate) {
+                            return (
+                                (value ? value : 'No data') +
+                                ' on ' +
+                                dayjsDate.format('LL')
+                            );
+                        },
+                    },
+                ],
+                [
+                    Legend,
+                    {
+                        width: 400,
+                        itemSelector: '#legend-label',
+                    },
+                ],
+            ]);
+        }        
 
         paintCalendar();
     </script>
 </body>
+
 </html>
