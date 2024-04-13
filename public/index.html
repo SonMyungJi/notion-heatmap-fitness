@@ -40,38 +40,29 @@
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
 
-            const aggregatedData = {};
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
-            const startOfDay = new Date(today.getFullYear()-1, 11, 25);
-            const endOfDay = new Date(today.getFullYear(), 11, 31);
 
-            for (let d = new Date(startOfDay); d <= endOfDay; d.setDate(d.getDate() + 1)) {
-                aggregatedData[d.toISOString().split('T')[0]] = 1;
-            }
-
-            dataSet.forEach(item => {
-                const date = item.date.split('T')[0];
-                const sun = item.sun;
-                aggregatedData[date] += sun;
+            // 날짜를 기준으로 데이터 그룹화 및 sun 값 합산
+            const groupedData = {};
+            dataSet.forEach(data => {
+                const date = data.date.split('T')[0]; // 날짜만 추출
+                if (!groupedData[date]) {
+                    groupedData[date] = 0;
+                }
+                groupedData[date] += data.sun;
             });
 
-            const aggregatedArray = Object.keys(aggregatedData).map(date => {
-                return {
-                    date: date,
-                    sum: aggregatedData[date]
-                };
-            });
-
-            const maxSum = Math.max(...aggregatedArray.map(item => item.sum)) - 1;
+            // 최대 sun 값 구하기
+            const maxSunCount = Object.values(groupedData).reduce((max, sum) => Math.max(max, sum), 0);
         
             const cal = new CalHeatmap();
             cal.paint({
                 data: {
-                    source: aggregatedArray,
+                    source: dataSet,
                     x: "date",
-                    y: "sum",
-                    groupY: 'max'
+                    y: "sun",
+                    groupY: 'count'
                 },
                 domain: {
                     type: 'month',
@@ -98,8 +89,8 @@
                 scale: {
                     color: {
                       scheme: 'Greens',
-                      type: 'linear',
-                      domain: [0, maxSum],
+                      type: 'linear', 
+                      domain: [0, maxSunCount], 
                     }
                   },
             }, [
@@ -108,11 +99,18 @@
                     {
                         text: function (date, value, dayjsDate) {
                             return (
-                                (value && value > 0 ? (value - 1) : 'No data') +
+                                (value ? value : 'No data') +
                                 ' on ' +
                                 dayjsDate.format('LL')
                             );
                         },
+                    },
+                ],
+                [
+                    Legend,
+                    {
+                        width: 400,
+                        itemSelector: '#legend-label',
                     },
                 ],
             ]);
