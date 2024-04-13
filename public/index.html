@@ -42,9 +42,6 @@
 
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
-
-            // 데이터 집계를 통해 최대값 계산
-            const maxSunCount = dataSet.reduce((max, data) => Math.max(max, data.sun), 1);
         
             const cal = new CalHeatmap();
             cal.paint({
@@ -52,7 +49,7 @@
                     source: dataSet,
                     x: "date",
                     y: "sun",
-                    groupY: 'max'
+                    groupY: 'sum'
                 },
                 domain: {
                     type: 'month',
@@ -80,7 +77,7 @@
                     color: {
                       scheme: 'Greens',
                       type: 'linear',
-                      domain: [0, maxSunCount],
+                      domain: [0, d3.max(dataSet, d => d.groupY)],
                     }
                   },
             }, [
