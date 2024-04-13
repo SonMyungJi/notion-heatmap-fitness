@@ -77,7 +77,7 @@
                     color: {
                       scheme: 'Greens',
                       type: 'linear', 
-                      domain: dataSet.map(d => d.sun), 
+                      domain: [0, d3.max(dataSet, d => d.groupY)], 
                     }
                   },
             }, [
