@@ -43,11 +43,7 @@
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
 
-            const maxSunCount = dataSet.reduce((max, data) => Math.max(max, data.sun), 0);
-
-            dataSet.forEach(data => {
-                console.log(data.groupY);
-            });
+            const maxSunCount = dataSet.reduce((max, data) => Math.max(max, data.date), 0);
         
             const cal = new CalHeatmap();
             cal.paint({
@@ -55,7 +51,7 @@
                     source: dataSet,
                     x: "date",
                     y: "sun",
-                    groupY: 'sum'
+                    groupY: 'count'
                 },
                 domain: {
                     type: 'month',
