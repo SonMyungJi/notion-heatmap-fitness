@@ -30,12 +30,6 @@ async function getSports() {
         //   }
         // },
         {
-          "property": "SUN",
-          "checkbox": {
-            "equals": true
-          }
-        },
-        {
           "or": [
             {
               "property": "Date",
