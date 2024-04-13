@@ -47,7 +47,7 @@
             const endOfDay = new Date(today.getFullYear(), 11, 31);
 
             for (let d = new Date(startOfDay); d <= endOfDay; d.setDate(d.getDate() + 1)) {
-                aggregatedData[d.toISOString().split('T')[0]] = 0;
+                aggregatedData[d.toISOString().split('T')[0]] = 1;
             }
 
             dataSet.forEach(item => {
@@ -108,7 +108,7 @@
                     {
                         text: function (date, value, dayjsDate) {
                             return (
-                                (value !== null && value !== undefined ? value.toString() : 'No data') +
+                                (value ? value : 'No data') +
                                 ' on ' +
                                 dayjsDate.format('LL')
                             );
