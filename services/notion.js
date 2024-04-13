@@ -64,7 +64,13 @@ async function getSports() {
       // "sport": page.properties.Sports.select.name,
       "sun": page.properties.SUN.checkbox ? 1 : 0 // notion에서 반환하는 체크된 checkbox의 값은 Yes이다
     }
-  })
+  }).reduce((acc, cur) => {
+    if (!acc[cur.date]) {
+      acc[cur.date] = 0;
+    }
+    acc[cur.date] += cur.sun;
+    return acc;
+  }, {});
 
   return rawData
 }

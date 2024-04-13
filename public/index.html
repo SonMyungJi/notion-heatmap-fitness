@@ -49,8 +49,8 @@
                     source: dataSet,
                     type: "json",
                     x: "date",
-                    y: "sun",
-                    groupY: 'sum'
+                    y: d => +d['sun_max'],
+                    groupY: 'max'
                 },
                 domain: {
                     type: 'month',
@@ -76,8 +76,9 @@
                 range: 12,
                 scale: {
                     opacity: {
-                        1: 'rgba(113, 183, 71, 0.2)',
-                        30: 'rgba(113, 183, 71, 1)'
+                      baseColor: '#71b747',
+                      type: 'linear',
+                      domain: [1, 30],
                     }
                   },
             }, [
