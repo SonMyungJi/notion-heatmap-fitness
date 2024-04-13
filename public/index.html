@@ -63,7 +63,7 @@
                 };
             });
 
-            const maxSum = Math.max(...aggregatedArray.map(item => item.sum));
+            const maxSum = Math.max(...aggregatedArray.map(item => item.sum)) - 1;
         
             const cal = new CalHeatmap();
             cal.paint({
@@ -99,7 +99,7 @@
                     color: {
                       scheme: 'Greens',
                       type: 'linear',
-                      domain: [1, maxSum-1],
+                      domain: [1, maxSum],
                     }
                   },
             }, [
