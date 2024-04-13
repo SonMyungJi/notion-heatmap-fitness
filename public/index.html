@@ -42,12 +42,12 @@
 
             const aggregatedData = {};
             const today = new Date();
-            const startYear = `today.getFullYear()-01-01`;
-            const startOfYear = new Date(today.getFullYear(), 0, 1);
-            const endOfYear = new Date(today.getFullYear(), 11, 31);
+            const startOfYear = `${today.getFullYear()}-01-01`;
+            const startOfDay = new Date(today.getFullYear()-1, 11, 25);
+            const endOfDay = new Date(today.getFullYear(), 11, 31);
 
-            for (let d = new Date(startOfYear); d <= endOfYear; d.setDate(d.getDate() + 1)) {
-                aggregatedData[d.toISOString().split('T')[0]] = 0;
+            for (let d = new Date(startOfDay); d <= endOfDay; d.setDate(d.getDate() + 1)) {
+                aggregatedData[d.toISOString().split('T')[0]] = 1;
             }
 
             dataSet.forEach(item => {
@@ -92,12 +92,12 @@
                     gutter: 4
                 },
                 date: {
-                    start: startYear
+                    start: new Date(startOfYear)
                 },
                 range: 12,
                 scale: {
-                    opacity: {
-                      baseColor: '#71b747',
+                    color: {
+                      scheme: 'Greens',
                       type: 'linear',
                       domain: [0, maxSum],
                     }
@@ -108,7 +108,7 @@
                     {
                         text: function (date, value, dayjsDate) {
                             return (
-                                (value ? value : 'No data') +
+                                (value && value > 0 ? (value - 1) : 'No data') +
                                 ' on ' +
                                 dayjsDate.format('LL')
                             );
