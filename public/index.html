@@ -42,11 +42,11 @@
 
             const aggregatedData = {};
             const today = new Date();
-            const startYear = `${today.getFullYear()}-01-01`;
-            const startOfYear = new Date(today.getFullYear(), 0, 1);
-            const endOfYear = new Date(today.getFullYear(), 11, 31);
+            const startOfYear = `${today.getFullYear()}-01-01`;
+            const startOfDay = new Date(today.getFullYear()-1, 11, 25);
+            const endOfDay = new Date(today.getFullYear(), 11, 31);
 
-            for (let d = new Date(startOfYear); d <= endOfYear; d.setDate(d.getDate() + 1)) {
+            for (let d = new Date(startOfDay); d <= endOfDay; d.setDate(d.getDate() + 1)) {
                 aggregatedData[d.toISOString().split('T')[0]] = 0;
             }
 
@@ -92,7 +92,7 @@
                     gutter: 4
                 },
                 date: {
-                    start: new Date(startYear)
+                    start: new Date(startOfYear)
                 },
                 range: 12,
                 scale: {
