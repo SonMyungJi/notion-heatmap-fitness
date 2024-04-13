@@ -8,7 +8,7 @@ const notion = new Client({
 
 const database_id = process.env.NOTION_DATABASE_ID
 
-// 수정사항 : "SUN"이라는 checkbox의 체크여부에 따라 데이터 가져오기
+// 수정사항 : "SUN"이라는 checkbox의 체크여부에 따라 데이터 반환
 
 async function getSports() {
 
@@ -64,15 +64,7 @@ async function getSports() {
       // "sport": page.properties.Sports.select.name,
       "sun": page.properties.SUN.checkbox ? 1 : 0 // notion에서 반환하는 체크된 checkbox의 값은 Yes이다
     }
-  }).reduce((acc, cur) => {
-    if (!acc[cur.date]) {
-      acc[cur.date] = 0;
-    }
-    acc[cur.date] += cur.sun;
-    return acc;
-  }, {});
-
-  console.log(rawData);
+  })
 
   return rawData
 }

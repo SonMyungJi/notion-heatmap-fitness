@@ -46,10 +46,9 @@
             const cal = new CalHeatmap();
             cal.paint({
                 data: {
-                    source: dataSet,
-                    type: "json",
+                    source: datesCounts,
                     x: "date",
-                    y: d => +d['sun_max'],
+                    y: d => +d['sun'],
                     groupY: 'max'
                 },
                 domain: {
