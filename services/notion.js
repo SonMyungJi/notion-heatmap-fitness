@@ -72,6 +72,8 @@ async function getSports() {
     return acc;
   }, {});
 
+  console.log(rawData);
+
   return rawData
 }
 
