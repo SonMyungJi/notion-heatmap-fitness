@@ -42,6 +42,7 @@
 
             const aggregatedData = {};
             const today = new Date();
+            const startYear = `today.getFullYear()-01-01`;
             const startOfYear = new Date(today.getFullYear(), 0, 1);
             const endOfYear = new Date(today.getFullYear(), 11, 31);
 
@@ -91,7 +92,7 @@
                     gutter: 4
                 },
                 date: {
-                    start: startOfYear
+                    start: startYear
                 },
                 range: 12,
                 scale: {
