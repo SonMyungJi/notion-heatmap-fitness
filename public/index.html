@@ -45,13 +45,13 @@
 
             dataSet.forEach(data => {
                 const baseDate = new Date(data.date);
-                const sunday = new Date(baseDate.setDate(baseDate.getDate() + 0));
-                const monday = new Date(baseDate.setDate(baseDate.getDate() + 1));
-                const tuesday = new Date(baseDate.setDate(baseDate.getDate() + 2));
-                const wednesday = new Date(baseDate.setDate(baseDate.getDate() + 3));
-                const thursday = new Date(baseDate.setDate(baseDate.getDate() + 4));
-                const friday = new Date(baseDate.setDate(baseDate.getDate() + 5));
-                const saturday = new Date(baseDate.setDate(baseDate.getDate() + 6));
+                const sunday = new Date(baseDate.setDate(baseDate.getDate() + 1));
+                const monday = new Date(baseDate.setDate(baseDate.getDate() + 2));
+                const tuesday = new Date(baseDate.setDate(baseDate.getDate() + 3));
+                const wednesday = new Date(baseDate.setDate(baseDate.getDate() + 4));
+                const thursday = new Date(baseDate.setDate(baseDate.getDate() + 5));
+                const friday = new Date(baseDate.setDate(baseDate.getDate() + 6));
+                const saturday = new Date(baseDate.setDate(baseDate.getDate() + 7));
 
                 if (!processedData[sunday]) {
                     processedData[sunday] = [];
