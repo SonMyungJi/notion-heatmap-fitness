@@ -52,19 +52,19 @@
                 const monday = new Date(baseDate.getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
                 if (!processedData[sunday]) {
-                    processedData[sunday] = { names: []};
+                    processedData[sunday] = [];
                 }
 
                 if (!processedData[monday]) {
-                    processedData[monday] = { names: []};
+                    processedData[monday] = [];
                 }
             
                 if (data.sun === 1) {
-                    processedData[sunday].names.push(data.name[0].text.content);
+                    processedData[sunday].push(data.name[0].text.content);
                 }
 
                 if (data.mon === 1) {
-                    processedData[monday].names.push(data.name[0].text.content);
+                    processedData[monday].push(data.name[0].text.content);
                 }
             });
 
@@ -84,7 +84,8 @@
                 data: {
                     source: processedDataArray,
                     x: "date",
-                    y: "names"
+                    y: "names",
+                    groupY: "count"
                 },
                 domain: {
                     type: 'month',
