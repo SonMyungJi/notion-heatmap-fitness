@@ -43,7 +43,6 @@
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
 
-            // dataSet 가공
             const processedData = {};
 
             dataSet.forEach(data => {
@@ -58,7 +57,7 @@
                 if (!processedData[monday]) {
                     processedData[monday] = [];
                 }
-            
+
                 if (data.sun === 1) {
                     processedData[sunday].push(data.name[0].text.content);
                 }
@@ -68,16 +67,17 @@
                 }
             });
 
-            const processedDataArray = Object.entries(processedData).map(([date, { names }]) => {
-                return { date, names };
-            });
-            
-            console.log(processedDataArray);
-
-            // processedData를 순회하며 최대값 찾기
+            // names 최대값 찾기
             const maxCount = Object.values(processedData).reduce((max, names) => {
                 return Math.max(max, names.length);
             }, 0);
+
+            const processedDataArray = Object.entries(processedData).map(([date, names]) => {
+                return { date, names };
+            });
+
+            console.log(processedDataArray);
+            console.log(maxCount);
         
             const cal = new CalHeatmap();
             cal.paint({
@@ -85,7 +85,6 @@
                     source: processedDataArray,
                     x: "date",
                     y: "names",
-                    groupY: "count"
                 },
                 domain: {
                     type: 'month',
