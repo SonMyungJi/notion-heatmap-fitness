@@ -68,11 +68,11 @@
                 }
             });
 
-            Object.keys(processedData).forEach(date => {
-                processedData[date].names = processedData[date].names.join(', ');
+            const processedDataArray = Object.entries(processedData).map(([date, { names }]) => {
+                return { date, names };
             });
             
-            console.log(processedData);
+            console.log(processedDataArray);
 
             // processedData를 순회하며 최대값 찾기
             const maxCount = Object.values(processedData).reduce((max, names) => {
@@ -82,7 +82,7 @@
             const cal = new CalHeatmap();
             cal.paint({
                 data: {
-                    source: processedData,
+                    source: processedDataArray,
                     x: "date",
                     y: "names"
                 },
