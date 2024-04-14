@@ -40,31 +40,53 @@
             const response = await fetch('/api/weekly-todos');
             const dataSet = await response.json();
 
-            console.log(dataSet);
-
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
 
-            // 날짜를 기준으로 데이터 그룹화 및 sun 값 합산
-            const groupedData = {};
-            dataSet.forEach(data => {
-                const date = data.date.split('T')[0]; // 날짜만 추출
-                if (!groupedData[date]) {
-                    groupedData[date] = 0;
-                }
-                groupedData[date] += data.sun;
-            });
+            // dataSet 가공
+            const processedData = {};
 
-            // 최대 sun 값 구하기
-            const maxSunCount = Object.values(groupedData).reduce((max, sum) => Math.max(max, sum), 0);
+            dataSet.forEach(data => {
+                const baseDate = new Date(data.date);
+                const sunday = baseDate.getTime();
+                const monday = new Date(baseDate.setDate(baseDate.getDate() + 1)).getTime();
+            })
+
+            if (!processedData[sunday]) {
+                processedData[sunday] = new Set();
+            }
+        
+            if (!processedData[monday]) {
+                processedData[monday] = new Set();
+            }
+
+            if (data.sun === 1) {
+                processedData[sunday].add(data.name);
+            }
+
+            if (data.mon === 1) {
+                processedData[monday].add(data.name);
+            }
+
+            Object.keys(processedData).forEach(timestamp => {
+                processedData[timestamp] = Array.from(processedData[timestamp]);
+            });
+            
+            console.log(processedData);
+
+            // processedData를 순회하며 최대값 찾기
+            const maxCount = Object.values(processedData).reduce((max, names) => {
+                return Math.max(max, names.length);
+            }, 0);
+            
+            console.log("maxCount:", maxCount);
         
             const cal = new CalHeatmap();
             cal.paint({
                 data: {
-                    source: dataSet,
-                    x: "date",
-                    y: "sun",
-                    groupY: 'count'
+                    source: processedData,
+                    x: "timestamp",
+                    y: "names"
                 },
                 domain: {
                     type: 'month',
@@ -92,7 +114,7 @@
                     color: {
                       scheme: 'Greens',
                       type: 'linear', 
-                      domain: [0, maxSunCount], 
+                      domain: [0, maxCount], 
                     }
                   },
             }, [
