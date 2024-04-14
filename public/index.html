@@ -52,19 +52,19 @@
                 const monday = new Date(baseDate.getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
                 if (!processedData[sunday]) {
-                    processedData[sunday] = [];
+                    processedData[sunday] = { names: []};
                 }
 
                 if (!processedData[monday]) {
-                    processedData[monday] = [];
+                    processedData[monday] = { names: []};
                 }
             
                 if (data.sun === 1) {
-                    processedData[sunday].push(data.name[0].text.content);
+                    processedData[sunday].names.push(data.name[0].text.content);
                 }
 
                 if (data.mon === 1) {
-                    processedData[monday].push(data.name[0].text.content);
+                    processedData[monday].names.push(data.name[0].text.content);
                 }
             });
             
