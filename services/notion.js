@@ -8,61 +8,30 @@ const notion = new Client({
 
 const database_id = process.env.NOTION_DATABASE_ID
 
-// 수정사항 : "SUN"이라는 checkbox의 체크여부에 따라 데이터 반환
+// 수정사항 : 주간 데이터 가져오기
 
-async function getSports() {
+async function getTodos() {
 
   const today = new Date();
-  const startOfYear = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0];
-
   const lastYear = today.getFullYear() - 1;
   const lastYearStart = `${lastYear}-12-25`;
-  const lastYearEnd = `${lastYear}-12-31`;
 
   const { results } = await notion.databases.query({
     database_id: `${database_id}`,
     filter: {
-      "and": [
-        // {
-        //   "property": "Sports",
-        //   "select": {
-        //     "is_not_empty": true
-        //   }
-        // },
-        {
-          "property": "SUN",
-          "checkbox": {
-            "equals": true
-          }
-        },
-        {
-          "or": [
-            {
-              "property": "Date",
-              "date": {
-                "on_or_after": startOfYear,
-              }
-            },
-            {
-              "property": "Date",
-              "date": {
-                "on_or_after": lastYearStart,
-                "on_or_before": lastYearEnd
-              }
-            }
-          ]
-          
-        }
-      ]
+      "timestamp": "created_time",
+      "created_time": {
+        "on_or_after": lastYearStart
+      }
     }
   })
 
-
   const rawData = results.map(page => {
     return {
-      "date": new Date(page.properties.Date.date.start),
-      // "sport": page.properties.Sports.select.name,
-      "sun": page.properties.SUN.checkbox ? 1 : 0 // notion에서 반환하는 체크된 checkbox의 값은 Yes이다
+      "name": page.properties.Name.title,
+      "date": new Date(page.created_time),
+      "sun": page.properties.SUN.checkbox ? 1 : 0,
+      "mon": page.properties.MON.checkbox ? 1 : 0
     }
   })
 
@@ -80,6 +49,6 @@ async function getTitle() {
 }
 
 module.exports = {
-  getSports: getSports,
+  getTodos: getTodos,
   getTitle: getTitle
 }

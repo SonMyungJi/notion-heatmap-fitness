@@ -37,32 +37,51 @@
         // 수정사항 : 특정 날짜의 체크된 SUN 수에 따라 서로 다른 색 칠하기
 
         async function paintCalendar() {
-            const response = await fetch('/api/daily-sports');
+            const response = await fetch('/api/weekly-todos');
             const dataSet = await response.json();
 
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
 
-            // 날짜를 기준으로 데이터 그룹화 및 sun 값 합산
-            const groupedData = {};
+            const processedData = {};
+
             dataSet.forEach(data => {
-                const date = data.date.split('T')[0]; // 날짜만 추출
-                if (!groupedData[date]) {
-                    groupedData[date] = 0;
+                const baseDate = new Date(data.date);
+                const sunday = baseDate.toISOString().slice(0, 10);
+                const monday = new Date(baseDate.getTime() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+
+                if (!processedData[sunday]) {
+                    processedData[sunday] = [];
                 }
-                groupedData[date] += data.sun;
+
+                if (!processedData[monday]) {
+                    processedData[monday] = [];
+                }
+
+                if (data.sun === 1) {
+                    processedData[sunday].push(data.name[0].text.content);
+                }
+
+                if (data.mon === 1) {
+                    processedData[monday].push(data.name[0].text.content);
+                }
             });
 
-            // 최대 sun 값 구하기
-            const maxSunCount = Object.values(groupedData).reduce((max, sum) => Math.max(max, sum), 0);
+            // names 최대값 찾기
+            const maxCount = Object.values(processedData).reduce((max, names) => {
+                return Math.max(max, names.length);
+            }, 0);
+
+            const processedDataArray = Object.entries(processedData).map(([date, names]) => {
+                return { date, count: names.length, names: names.join(', ') };
+            });
         
             const cal = new CalHeatmap();
             cal.paint({
                 data: {
-                    source: dataSet,
+                    source: processedDataArray,
                     x: "date",
-                    y: "sun",
-                    groupY: 'count'
+                    y: "count",
                 },
                 domain: {
                     type: 'month',
@@ -90,7 +109,7 @@
                     color: {
                       scheme: 'Greens',
                       type: 'linear', 
-                      domain: [0, maxSunCount], 
+                      domain: [0, maxCount], 
                     }
                   },
             }, [
@@ -98,12 +117,11 @@
                     Tooltip,
                     {
                         text: function (date, value, dayjsDate) {
-                            return (
-                                (value ? value : 'No data') +
-                                ' on ' +
-                                dayjsDate.format('LL')
-                            );
-                        },
+                            // 해당 날짜에 대한 데이터 찾기
+                            const data = processedDataArray.find(item => item.date === new Date(date).toISOString().slice(0, 10));
+                            // 데이터가 존재하는 경우에는 names를 반환하고, 그렇지 않으면 'No Data'를 반환
+                            return (value ? data.names : 'No Data') + ' on ' + dayjsDate.format('LL');
+                        }
                     },
                 ],
                 [
