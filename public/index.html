@@ -75,10 +75,6 @@
             const processedDataArray = Object.entries(processedData).map(([date, names]) => {
                 return { date, count: names.length, names: names.join(', ') };
             });
-
-            console.log(processedData);
-            console.log(processedDataArray);
-            console.log(maxCount);
         
             const cal = new CalHeatmap();
             cal.paint({
@@ -124,7 +120,7 @@
                             // 해당 날짜에 대한 데이터 찾기
                             const data = processedDataArray.find(item => item.date === new Date(date).toISOString().slice(0, 10));
                             // 데이터가 존재하는 경우에는 names를 반환하고, 그렇지 않으면 'No Data'를 반환
-                            return value ? data.names + ' on ' + dayjsDate.format('LL') : 'No Data';
+                            return (value ? data.names : 'No Data') + ' on ' + dayjsDate.format('LL');
                         }
                     },
                 ],
