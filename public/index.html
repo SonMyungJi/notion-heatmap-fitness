@@ -121,8 +121,9 @@
                     Tooltip,
                     {
                         text: function (date, value, dayjsDate) {
+                            const foundData = processedDataArray.find(item => item.date === date);
                             return (
-                                (value ? value : 'No data') +
+                                (foundData ? foundData.names : 'No data') + // foundData가 있으면 names 출력, 아니면 'No data' 출력
                                 ' on ' +
                                 dayjsDate.format('LL')
                             );
