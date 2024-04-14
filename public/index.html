@@ -45,13 +45,13 @@
 
             dataSet.forEach(data => {
                 const baseDate = new Date(data.date);
-                const sunday = new Date(baseDate.setDate(baseDate.getDate() + 1));
-                const monday = new Date(baseDate.setDate(baseDate.getDate() + 2));
-                const tuesday = new Date(baseDate.setDate(baseDate.getDate() + 3));
-                const wednesday = new Date(baseDate.setDate(baseDate.getDate() + 4));
-                const thursday = new Date(baseDate.setDate(baseDate.getDate() + 5));
-                const friday = new Date(baseDate.setDate(baseDate.getDate() + 6));
-                const saturday = new Date(baseDate.setDate(baseDate.getDate() + 7));
+                const sunday = new Date(baseDate.getTime() + 1 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const monday = new Date(baseDate.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const tuesday = new Date(baseDate.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const wednesday = new Date(baseDate.getTime() + 4 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const thursday = new Date(baseDate.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const friday = new Date(baseDate.getTime() + 6 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const saturday = new Date(baseDate.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
                 if (!processedData[sunday]) {
                     processedData[sunday] = [];
@@ -75,6 +75,7 @@
                     processedData[saturday] = [];
                 }
 
+
                 if (data.sun === 1) {
                     processedData[sunday].push(data.name);
                 }
@@ -87,7 +88,7 @@
                 if (data.wed === 1) {
                     processedData[wednesday].push(data.name);
                 }
-                if (data.thr === 1) {
+                if (data.thu === 1) {
                     processedData[thursday].push(data.name);
                 }
                 if (data.fri === 1) {
@@ -104,7 +105,7 @@
                 names: names.join(', ')
             }));
             
-            const maxCount = Math.max(...processedDataArray.map(entry => entry.count));            
+            const maxCount = Math.max(...processedDataArray.map(entry => entry.count));
         
             const cal = new CalHeatmap();
             cal.paint({
