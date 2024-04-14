@@ -60,11 +60,11 @@
                 }
             
                 if (data.sun === 1) {
-                    processedData[sunday].push(data.name);
+                    processedData[sunday].push(data.name[0].text.content);
                 }
 
                 if (data.mon === 1) {
-                    processedData[monday].push(data.name);
+                    processedData[monday].push(data.name[0].text.content);
                 }
             });
             
@@ -74,8 +74,6 @@
             const maxCount = Object.values(processedData).reduce((max, names) => {
                 return Math.max(max, names.length);
             }, 0);
-            
-            console.log("maxCount:", maxCount);
         
             const cal = new CalHeatmap();
             cal.paint({
