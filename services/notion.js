@@ -29,7 +29,7 @@ async function getSports() {
 
   const rawData = results.map(page => {
     return {
-      "title": page.properties.title.title,
+      "title": page.properties.Name.title,
       "date": new Date(page.created_time),
       "sport": page.properties.Sports.select.name,
       "sun": page.properties.SUN.checkbox ? 1 : 0,
