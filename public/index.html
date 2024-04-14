@@ -124,7 +124,7 @@
                             // 해당 날짜에 대한 데이터 찾기
                             const data = processedDataArray.find(item => item.date === date);
                             // 데이터가 존재하는 경우에는 names를 반환하고, 그렇지 않으면 'No Data'를 반환
-                            return data ? data.names + ' on ' + dayjsDate.format('LL') : 'No Data';
+                            return value ? data.names + ' on ' + dayjsDate.format('LL') : 'No Data';
                         }
                     },
                 ],
