@@ -48,28 +48,15 @@
 
             dataSet.forEach(data => {
                 const baseDate = new Date(data.date);
-                const sunday = baseDate.getTime();
-                const monday = new Date(baseDate.setDate(baseDate.getDate() + 1)).getTime();
+                const date = baseDate.getTime();
 
-                if (!processedData[sunday]) {
-                    processedData[sunday] = new Set();
+                if (!processedData[date]) {
+                    processedData[date] = [];
                 }
             
-                if (!processedData[monday]) {
-                    processedData[monday] = new Set();
+                if (data.sun === 1 || data.mon === 1) {
+                    processedData[date].push(data.name);
                 }
-
-                if (data.sun === 1) {
-                    processedData[sunday].add(data.name);
-                }
-
-                if (data.mon === 1) {
-                    processedData[monday].add(data.name);
-                }
-            });
-
-            Object.keys(processedData).forEach(timestamp => {
-                processedData[timestamp] = Array.from(processedData[timestamp]);
             });
             
             console.log(processedData);
@@ -85,7 +72,7 @@
             cal.paint({
                 data: {
                     source: processedData,
-                    x: "timestamp",
+                    x: "date",
                     y: "names"
                 },
                 domain: {
