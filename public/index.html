@@ -73,7 +73,7 @@
             }, 0);
 
             const processedDataArray = Object.entries(processedData).map(([date, names]) => {
-                return { date, names };
+                return { date, names: names.join(', ') };
             });
 
             console.log(processedDataArray);
