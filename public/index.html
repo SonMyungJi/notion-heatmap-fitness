@@ -76,16 +76,17 @@
                 return { date, names: names.join(', ') };
             });
 
+            console.log(processedData);
             console.log(processedDataArray);
             console.log(maxCount);
         
             const cal = new CalHeatmap();
             cal.paint({
                 data: {
-                    source: processedDataArray,
+                    source: processedData,
                     x: "date",
                     y: "names",
-                    groupY: d => d[0]
+                    groupY: count
                 },
                 domain: {
                     type: 'month',
