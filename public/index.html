@@ -67,6 +67,10 @@
                     processedData[monday].names.push(data.name[0].text.content);
                 }
             });
+
+            Object.keys(processedData).forEach(date => {
+                processedData[date].names = processedData[date].names.join(', ');
+            });
             
             console.log(processedData);
 
