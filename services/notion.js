@@ -39,8 +39,6 @@ async function getSports() {
   return rawData
 }
 
-console.log(rawData);
-
 async function getTitle() {
 
   const response = await notion.databases.retrieve({

@@ -40,6 +40,8 @@
             const response = await fetch('/api/daily-sports');
             const dataSet = await response.json();
 
+            console.log(dataSet);
+
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
 
