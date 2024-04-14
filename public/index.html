@@ -43,25 +43,59 @@
 
             const processedData = {};
 
-            const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-
             dataSet.forEach(data => {
                 const baseDate = new Date(data.date + 'Z');
+                const sunday = new Date(baseDate.setDate(baseDate.getDate() + 0));
+                const monday = new Date(baseDate.setDate(baseDate.getDate() + 1));
+                const tuesday = new Date(baseDate.setDate(baseDate.getDate() + 2));
+                const wednesday = new Date(baseDate.setDate(baseDate.getDate() + 3));
+                const thursday = new Date(baseDate.setDate(baseDate.getDate() + 4));
+                const friday = new Date(baseDate.setDate(baseDate.getDate() + 5));
+                const saturday = new Date(baseDate.setDate(baseDate.getDate() + 6));
 
-                daysOfWeek.forEach((day, index) => {
-                    const currentDate = new Date(baseDate);
-                    currentDate.setDate(baseDate.getDate() + index);
+                if (!processedData[sunday]) {
+                    processedData[sunday] = [];
+                }
+                if (!processedData[monday]) {
+                    processedData[monday] = [];
+                }
+                if (!processedData[tuesday]) {
+                    processedData[tuesday] = [];
+                }
+                if (!processedData[wednesday]) {
+                    processedData[wednesday] = [];
+                }
+                if (!processedData[thursday]) {
+                    processedData[thursday] = [];
+                }
+                if (!processedData[friday]) {
+                    processedData[friday] = [];
+                }
+                if (!processedData[saturday]) {
+                    processedData[saturday] = [];
+                }
 
-                    const formattedDate = currentDate.toISOString().slice(0, 10);
-
-                    if (!processedData[formattedDate]) {
-                        processedData[formattedDate] = [];
-                    }
-
-                    if (data[day.substring(0, 3)] === 1) {
-                        processedData[formattedDate].push(data.name);
-                    }
-                });
+                if (data.sun === 1) {
+                    processedData[sunday].push(data.name);
+                }
+                if (data.mon === 1) {
+                    processedData[monday].push(data.name);
+                }
+                if (data.tue === 1) {
+                    processedData[tuesday].push(data.name);
+                }
+                if (data.wed === 1) {
+                    processedData[wednesday].push(data.name);
+                }
+                if (data.thr === 1) {
+                    processedData[thursday].push(data.name);
+                }
+                if (data.fri === 1) {
+                    processedData[friday].push(data.name);
+                }
+                if (data.sat === 1) {
+                    processedData[saturday].push(data.name);
+                }
             });
 
             const processedDataArray = Object.entries(processedData).map(([date, names]) => ({
