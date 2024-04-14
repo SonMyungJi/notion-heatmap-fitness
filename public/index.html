@@ -73,7 +73,7 @@
             }, 0);
 
             const processedDataArray = Object.entries(processedData).map(([date, names]) => {
-                return { date, names: names.join(', ') };
+                return { date, count: names.length, names: names.join(', ') };
             });
 
             console.log(processedData);
@@ -83,10 +83,9 @@
             const cal = new CalHeatmap();
             cal.paint({
                 data: {
-                    source: processedData,
+                    source: processedDataArray,
                     x: "date",
-                    y: "names",
-                    groupY: count
+                    y: "count",
                 },
                 domain: {
                     type: 'month',
