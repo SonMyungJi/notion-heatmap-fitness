@@ -1,14 +1,11 @@
 const dotenv = require('dotenv').config()
 const { Client } = require('@notionhq/client')
 
-// init client
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 })
 
 const database_id = process.env.NOTION_DATABASE_ID
-
-// 수정사항 : 주간 데이터 가져오기
 
 async function getTodos() {
 
@@ -31,7 +28,12 @@ async function getTodos() {
       "name": page.properties.Name.title,
       "date": new Date(page.created_time),
       "sun": page.properties.SUN.checkbox ? 1 : 0,
-      "mon": page.properties.MON.checkbox ? 1 : 0
+      "mon": page.properties.MON.checkbox ? 1 : 0,
+      "tue": page.properties.TUE.checkbox ? 1 : 0,
+      "wed": page.properties.WED.checkbox ? 1 : 0,
+      "thr": page.properties.THR.checkbox ? 1 : 0,
+      "fri": page.properties.FRI.checkbox ? 1 : 0,
+      "sat": page.properties.SAT.checkbox ? 1 : 0,
     }
   })
 
