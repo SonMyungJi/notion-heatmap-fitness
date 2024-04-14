@@ -45,13 +45,13 @@
 
             dataSet.forEach(data => {
                 const baseDate = new Date(data.date);
-                const sunday = baseDate.toISOString().slice(0, 10);
-                const monday = new Date(baseDate.getTime() + 1 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-                const tuesday = new Date(baseDate.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-                const wednesday = new Date(baseDate.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-                const thursday = new Date(baseDate.getTime() + 4 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-                const friday = new Date(baseDate.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-                const saturday = new Date(baseDate.getTime() + 6 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const sunday = new Date(baseDate.getTime() + 1 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const monday = new Date(baseDate.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const tuesday = new Date(baseDate.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const wednesday = new Date(baseDate.getTime() + 4 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const thursday = new Date(baseDate.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const friday = new Date(baseDate.getTime() + 6 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const saturday = new Date(baseDate.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
                 if (!processedData[sunday]) {
                     processedData[sunday] = [];
