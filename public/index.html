@@ -44,7 +44,7 @@
             const processedData = {};
 
             dataSet.forEach(data => {
-                const baseDate = new Date(data.date + 'Z');
+                const baseDate = new Date(data.date);
                 const sunday = new Date(baseDate.setDate(baseDate.getDate() + 0));
                 const monday = new Date(baseDate.setDate(baseDate.getDate() + 1));
                 const tuesday = new Date(baseDate.setDate(baseDate.getDate() + 2));
@@ -104,7 +104,7 @@
                 names: names.join(', ')
             }));
             
-            const maxCount = Math.max(...processedDataArray.map(entry => entry.count));
+            const maxCount = Math.max(...processedDataArray.map(entry => entry.count));            
         
             const cal = new CalHeatmap();
             cal.paint({
