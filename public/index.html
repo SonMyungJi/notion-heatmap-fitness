@@ -43,69 +43,34 @@
 
             const processedData = {};
 
+            const daysOfWeek = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
             dataSet.forEach(data => {
-                const baseDate = new Date(data.date);
-                const sunday = new Date(baseDate.getTime() + 1 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-                const monday = new Date(baseDate.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-                const tuesday = new Date(baseDate.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-                const wednesday = new Date(baseDate.getTime() + 4 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-                const thursday = new Date(baseDate.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-                const friday = new Date(baseDate.getTime() + 6 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-                const saturday = new Date(baseDate.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+                const baseDate = new Date(data.date + 'Z');
 
-                if (!processedData[sunday]) {
-                    processedData[sunday] = [];
-                }
-                if (!processedData[monday]) {
-                    processedData[monday] = [];
-                }
-                if (!processedData[tuesday]) {
-                    processedData[tuesday] = [];
-                }
-                if (!processedData[wednesday]) {
-                    processedData[wednesday] = [];
-                }
-                if (!processedData[thursday]) {
-                    processedData[thursday] = [];
-                }
-                if (!processedData[friday]) {
-                    processedData[friday] = [];
-                }
-                if (!processedData[saturday]) {
-                    processedData[saturday] = [];
-                }
+                daysOfWeek.forEach((day, index) => {
+                    const currentDate = new Date(baseDate);
+                    currentDate.setDate(baseDate.getDate() + index);
 
+                    const formattedDate = currentDate.toISOString().slice(0, 10);
 
-                if (data.sun === 1) {
-                    processedData[sunday].push(data.name[0].text.content);
-                }
-                if (data.mon === 1) {
-                    processedData[monday].push(data.name[0].text.content);
-                }
-                if (data.tue === 1) {
-                    processedData[tuesday].push(data.name[0].text.content);
-                }
-                if (data.wed === 1) {
-                    processedData[wednesday].push(data.name[0].text.content);
-                }
-                if (data.thr === 1) {
-                    processedData[thursday].push(data.name[0].text.content);
-                }
-                if (data.fri === 1) {
-                    processedData[friday].push(data.name[0].text.content);
-                }
-                if (data.sat === 1) {
-                    processedData[saturday].push(data.name[0].text.content);
-                }
+                    if (!processedData[formattedDate]) {
+                        processedData[formattedDate] = [];
+                    }
+
+                    if (data[day.substring(0, 3)] === 1) {
+                        processedData[formattedDate].push(data.name);
+                    }
+                });
             });
 
-            const maxCount = Object.values(processedData).reduce((max, names) => {
-                return Math.max(max, names.length);
-            }, 0);
-
-            const processedDataArray = Object.entries(processedData).map(([date, names]) => {
-                return { date, count: names.length, names: names.join(', ') };
-            });
+            const processedDataArray = Object.entries(processedData).map(([date, names]) => ({
+                date,
+                count: names.length,
+                names: names.join(', ')
+            }));
+            
+            const maxCount = Math.max(...processedDataArray.map(entry => entry.count));
         
             const cal = new CalHeatmap();
             cal.paint({
