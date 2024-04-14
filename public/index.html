@@ -50,23 +50,23 @@
                 const baseDate = new Date(data.date);
                 const sunday = baseDate.getTime();
                 const monday = new Date(baseDate.setDate(baseDate.getDate() + 1)).getTime();
-            })
 
-            if (!processedData[sunday]) {
-                processedData[sunday] = new Set();
-            }
-        
-            if (!processedData[monday]) {
-                processedData[monday] = new Set();
-            }
+                if (!processedData[sunday]) {
+                    processedData[sunday] = new Set();
+                }
+            
+                if (!processedData[monday]) {
+                    processedData[monday] = new Set();
+                }
 
-            if (data.sun === 1) {
-                processedData[sunday].add(data.name);
-            }
+                if (data.sun === 1) {
+                    processedData[sunday].add(data.name);
+                }
 
-            if (data.mon === 1) {
-                processedData[monday].add(data.name);
-            }
+                if (data.mon === 1) {
+                    processedData[monday].add(data.name);
+                }
+            });
 
             Object.keys(processedData).forEach(timestamp => {
                 processedData[timestamp] = Array.from(processedData[timestamp]);
