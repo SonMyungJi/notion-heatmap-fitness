@@ -10,9 +10,9 @@ app.get('/', (req, res) => {
   res.sendFile('index.html', { root: path.join(__dirname, 'public') });
 })
 
-app.get('/api/daily-sports', async (req, res) => {
-  const sports = await notion.getSports()
-  res.json(sports)
+app.get('/api/weekly-todos', async (req, res) => {
+  const todos = await notion.getTodos()
+  res.json(todos)
 })
 
 app.get('/api/title', async (req, res) => {

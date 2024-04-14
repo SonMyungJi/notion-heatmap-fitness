@@ -37,7 +37,7 @@
         // 수정사항 : 특정 날짜의 체크된 SUN 수에 따라 서로 다른 색 칠하기
 
         async function paintCalendar() {
-            const response = await fetch('/api/daily-sports');
+            const response = await fetch('/api/weekly-todos');
             const dataSet = await response.json();
 
             console.log(dataSet);

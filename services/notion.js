@@ -10,7 +10,7 @@ const database_id = process.env.NOTION_DATABASE_ID
 
 // 수정사항 : 주간 데이터 가져오기
 
-async function getSports() {
+async function getTodos() {
 
   const today = new Date();
   const lastYear = today.getFullYear() - 1;
@@ -26,12 +26,10 @@ async function getSports() {
     }
   })
 
-
   const rawData = results.map(page => {
     return {
-      "title": page.properties.Name.title,
+      "name": page.properties.Name.title,
       "date": new Date(page.created_time),
-      "sport": page.properties.Sports.select.name,
       "sun": page.properties.SUN.checkbox ? 1 : 0,
       "mon": page.properties.MON.checkbox ? 1 : 0
     }
@@ -51,6 +49,6 @@ async function getTitle() {
 }
 
 module.exports = {
-  getSports: getSports,
+  getTodos: getTodos,
   getTitle: getTitle
 }
