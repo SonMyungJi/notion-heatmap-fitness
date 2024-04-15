@@ -10,16 +10,16 @@ const database_id = process.env.NOTION_DATABASE_ID
 async function getTodos() {
 
   const today = new Date();
-  const startYear = today.getFullYear();
-  const startMonth = today.getMonth() - 7;
+  let startYear = today.getFullYear();
+  let startMonth = today.getMonth() - 7;
 
   // 월이 음수일 경우에는 연도를 조정하고 월을 설정
   if (startMonth < 0) {
-      startYear -= 1;
+      startYear = 1;
       startMonth += 12;
   }
 
-  const startDate = `${startYear}-${startMonth}-01`;
+  let startDate = `${startYear}-${startMonth}-01`;
 
   const { results } = await notion.databases.query({
     database_id: `${database_id}`,
