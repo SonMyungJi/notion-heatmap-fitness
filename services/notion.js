@@ -30,7 +30,7 @@ async function getTodos() {
       "mon": page.properties.MON.checkbox ? 1 : 0,
       "tue": page.properties.TUE.checkbox ? 1 : 0,
       "wed": page.properties.WED.checkbox ? 1 : 0,
-      "thr": page.properties.THU.checkbox ? 1 : 0,
+      "thu": page.properties.THU.checkbox ? 1 : 0,
       "fri": page.properties.FRI.checkbox ? 1 : 0,
       "sat": page.properties.SAT.checkbox ? 1 : 0,
     }
