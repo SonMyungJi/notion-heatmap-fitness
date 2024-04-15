@@ -15,10 +15,10 @@ app.get('/api/weekly-todos', async (req, res) => {
   res.json(todos)
 })
 
-app.get('/api/title', async (req, res) => {
-  const title = await notion.getTitle()
-  res.json(title)
-})
+// app.get('/api/title', async (req, res) => {
+//   const title = await notion.getTitle()
+//   res.json(title)
+// })
 app.listen(PORT, console.log(`Server started on port ${PORT}`))
 
 module.exports = app

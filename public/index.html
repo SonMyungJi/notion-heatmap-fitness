@@ -20,8 +20,9 @@
     <div id="legend-label" class="flex justify-center items-center"></div>
     <script>
         async function updateHeading() {
-            const response = await fetch('/api/title');
-            const title = await response.json();
+            <!-- const response = await fetch('/api/title');
+            const title = await response.json(); -->
+            const title = new Date().getFullYear();
 
             const heading = document.getElementById("plotTitle");
 

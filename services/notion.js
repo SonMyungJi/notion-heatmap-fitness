@@ -39,18 +39,17 @@ async function getTodos() {
   return rawData
 }
 
-async function getTitle() {
+// async function getTitle() {
 
-  // const response = await notion.databases.retrieve({
-  //   database_id: `${database_id}`
-  // })
-  // const title = response.description[0].text.content
-  const title = today.getFullYear();
+//   const response = await notion.databases.retrieve({
+//      database_id: `${database_id}`
+//    })
+//   const title = response.description[0].text.content
 
-  return title
-}
+//   return title
+// }
 
 module.exports = {
   getTodos: getTodos,
-  getTitle: getTitle
+  // getTitle: getTitle
 }
