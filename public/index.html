@@ -39,8 +39,7 @@
             const dataSet = await response.json();
 
             const today = new Date();
-            today.setMonth(today.getMonth() - 8);
-            const startDate = today.toISOString().slice(0, 10);
+            const startOfYear = `${today.getFullYear()}-01-01`;
 
             const processedData = {};
 
@@ -126,7 +125,7 @@
                     },
                 },
                 subDomain: {
-                    type: 'ghDay',
+                    type: 'day',
                     radius: 2,
                     width: 15,
                     height: 15,
@@ -134,9 +133,9 @@
                     gutter: 4
                 },
                 date: {
-                    start: startDate
+                    start: new Date(startOfYear)
                 },
-                range: 8,
+                range: 12,
                 scale: {
                     color: {
                       scheme: 'Greens',
