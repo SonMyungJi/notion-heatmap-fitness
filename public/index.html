@@ -38,9 +38,6 @@
             const response = await fetch('/api/weekly-todos');
             const dataSet = await response.json();
 
-            const today = new Date();
-            const startDate = `${today.getFullYear()}-01-01`;
-
             const processedData = {};
 
             dataSet.forEach(data => {
@@ -127,7 +124,7 @@
                     gutter: 4
                 },
                 date: {
-                    start: startDate
+                    start: new Date()
                 },
                 range: 1,
                 scale: {
