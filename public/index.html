@@ -37,7 +37,6 @@
         async function paintCalendar() {
             const response = await fetch('/api/weekly-todos');
             const dataSet = await response.json();
-            console.log(dataSet);
 
             const processedData = {};
 
