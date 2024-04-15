@@ -13,10 +13,10 @@
 </head>
 
 <body>
-    <!-- <h1 id="plotTitle" class="text-3xl font-bold underline text-center">
+    <h1 id="plotTitle" class="text-3xl font-bold underline text-center">
         Title
-    </h1> -->
-    <div id="cal-heatmap" class="flex justify-center items-center my-4 text-lg"></div>
+    </h1>
+    <!-- <div id="cal-heatmap" class="flex justify-center items-center my-4 text-lg"></div> -->
     <div id="legend-label" class="flex justify-center items-center"></div>
     <script>
         async function updateHeading() {
@@ -39,7 +39,7 @@
             const dataSet = await response.json();
 
             const today = new Date();
-            const startOfYear = `${today.getFullYear()}-01-01`;
+            const startDate = `${today.getFullYear()}-01-01`;
 
             const processedData = {};
 
@@ -126,7 +126,7 @@
                     gutter: 4
                 },
                 date: {
-                    start: new Date(startOfYear)
+                    start: startDate
                 },
                 range: 1,
                 scale: {

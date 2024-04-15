@@ -10,15 +10,14 @@ const database_id = process.env.NOTION_DATABASE_ID
 async function getTodos() {
 
   const today = new Date();
-  const lastYear = today.getFullYear() - 1;
-  const lastYearStart = `${lastYear}-12-25`;
+  const startDate = `${today.getFullYear()}-01-01`;
 
   const { results } = await notion.databases.query({
     database_id: `${database_id}`,
     filter: {
       "timestamp": "created_time",
       "created_time": {
-        "on_or_after": lastYearStart
+        "on_or_after": startDate
       }
     }
   })
