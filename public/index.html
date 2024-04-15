@@ -106,8 +106,40 @@
             }));
             
             const maxCount = Math.max(...processedDataArray.map(entry => entry.count));
+
+            const customDayTemplate = function (DateHelper) {
+                return {
+                  name: 'custom_day',
+                  parent: 'day',
+                  rowsCount() {
+                    return 7; // 요일별로 7줄로 표시
+                  },
+                  columnsCount() {
+                    return 31; // 최대 31일까지 표시
+                  },
+                  mapping: (startDate, endDate, defaultValues) => {
+                    const mappings = [];
+                    const currentDate = new Date(startDate);
+              
+                    while (currentDate <= endDate) {
+                      for (let i = 0; i < 7; i++) {
+                        mappings.push({
+                          t: currentDate,
+                          x: currentDate.getDate() - 1,
+                          y: i,
+                          ...defaultValues,
+                        });
+                        currentDate.setDate(currentDate.getDate() + 1);
+                      }
+                    }
+                    return mappings;
+                  },
+                  // Missing extractUnit property, will be inherit from parent
+                };
+              };
         
             const cal = new CalHeatmap();
+            cal.addTemplate(customDayTemplate);
             cal.paint({
                 data: {
                     source: processedDataArray,
@@ -125,13 +157,7 @@
                     },
                 },
                 subDomain: {
-                    type: 'xDay',
-                    columnLimit: 7,
-                    width: 15, 
-                    height: 15, 
-                    label: 'D',
-                    gutter: 4,
-                    radius: 2,
+                    type: 'custom_day'
                 },
                 date: {
                     start: new Date(startOfYear)
