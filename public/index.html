@@ -48,7 +48,7 @@
                 startMonth += 12;
             }
 
-            const startDate = new Date(startYear, startMonth, 1); // 오늘로부터 7개월 이전을 시작점으로 설정
+            const startDate = `${startYear}-${startMonth}-01`;
 
             const processedData = {};
 
