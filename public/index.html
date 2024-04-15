@@ -40,7 +40,6 @@
 
             const today = new Date();
             const startOfYear = `${today.getFullYear()}-01-01`;
-            const endOfYear = `${today.getFullYear()}-12-31`;
 
             const processedData = {};
 
@@ -116,25 +115,25 @@
                     y: "count",
                 },
                 domain: {
-                    type: 'year',
+                    type: 'month',
                     gutter: 8,
+                    label: {text: 'MMM', textAlign: 'middle', position: 'top'},
                     subLabel: {
                         width: 40,
                         textAlign: 'middle',
-                        text: () => dayjs.monthsShort(),
+                        text: () => dayjs.weekdaysShort().map((d, i) => (i % 2 == 0 ? d : d)),
                     },
                 },
                 subDomain: {
-                    type: 'month',
+                    type: 'ghDay',
                     radius: 2,
                     width: 15,
                     height: 15,
-                    label: 'M',
+                    label: 'D',
                     gutter: 4
                 },
                 date: {
-                    start: new Date(startOfYear),
-                    end: new Date(endOfYear)
+                    start: new Date(startOfYear)
                 },
                 range: 12,
                 scale: {
