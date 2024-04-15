@@ -11,7 +11,6 @@ async function getTodos() {
 
   const today = new Date();
   const startDate = new Date(today.getFullYear() - 1, 11, 25).toISOString();
-  console.log(startDate);
 
   const { results } = await notion.databases.query({
     database_id: `${database_id}`,
