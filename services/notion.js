@@ -15,11 +15,11 @@ async function getTodos() {
 
   // 월이 음수일 경우에는 연도를 조정하고 월을 설정
   if (startMonth < 0) {
-      startYear = 1;
+      startYear -= 1;
       startMonth += 12;
   }
 
-  let startDate = `${startYear}-${startMonth}-01`;
+  const startDate = `${startYear}-${startMonth}-01`;
 
   const { results } = await notion.databases.query({
     database_id: `${database_id}`,

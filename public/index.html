@@ -38,6 +38,8 @@
             const response = await fetch('/api/weekly-todos');
             const dataSet = await response.json();
 
+            console.log(dataSet);
+
             const today = new Date();
             let startYear = today.getFullYear();
             let startMonth = today.getMonth() - 7;
