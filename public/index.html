@@ -106,8 +106,32 @@
             }));
             
             const maxCount = Math.max(...processedDataArray.map(entry => entry.count));
+
+            const sameRowDayTemplate = function (DateHelper) {
+                return {
+                  name: 'day_same_row',
+                  parent: 'day',
+                  rowsCount() {
+                    return 1;
+                  },
+                  columnsCount() {
+                    return 31;
+                  },
+                  mapping: (startDate, endDate, defaultValues) =>
+                    DateHelper.intervals('day', startDate, DateHelper.date(endDate)).map(
+                      (d, index) => ({
+                        t: d,
+                        x: index,
+                        y: 0,
+                        ...defaultValues,
+                      })
+                    ),
+                  // Missing extractUnit property, will be inherit from parent
+                };
+              };
         
             const cal = new CalHeatmap();
+            cal.addTemplates(samesRowDayTemplate);
             cal.paint({
                 data: {
                     source: processedDataArray,
@@ -125,12 +149,7 @@
                     },
                 },
                 subDomain: {
-                    type: 'day',
-                    radius: 2,
-                    width: 15,
-                    height: 15,
-                    label: 'D',
-                    gutter: 4
+                    type: 'day_same_row'
                 },
                 date: {
                     start: new Date(startOfYear)
