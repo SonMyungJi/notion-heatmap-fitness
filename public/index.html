@@ -39,16 +39,7 @@
             const dataSet = await response.json();
 
             const today = new Date();
-            const startYear = today.getFullYear();
-            const startMonth = today.getMonth() - 7;
-
-            // 월이 음수일 경우에는 연도를 조정하고 월을 설정
-            if (startMonth < 0) {
-                startYear -= 1;
-                startMonth += 12;
-            }
-
-            const startDate = `${startYear}-${startMonth}-01`;
+            const startOfYear = `${today.getFullYear()}-01-01`;
 
             const processedData = {};
 
@@ -142,7 +133,7 @@
                     gutter: 4
                 },
                 date: {
-                    start: startDate
+                    start: new Date(startOfYear)
                 },
                 range: 8,
                 scale: {
