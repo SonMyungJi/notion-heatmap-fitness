@@ -10,7 +10,8 @@ const database_id = process.env.NOTION_DATABASE_ID
 async function getTodos() {
 
   const today = new Date();
-  const startDate = `${today.getFullYear()}-01-01`;
+  const startDate = new Date(today.getFullYear() - 1, 11, 25).toISOString();
+  console.log(startDate);
 
   const { results } = await notion.databases.query({
     database_id: `${database_id}`,
