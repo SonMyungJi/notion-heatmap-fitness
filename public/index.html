@@ -44,6 +44,7 @@
 
             dataSet.forEach(data => {
                 const baseDate = new Date(data.date);
+                baseDate.setDate(baseDate.getDate() - 1);
                 const sunday = new Date(baseDate.getTime() + 1 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
                 const monday = new Date(baseDate.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
                 const tuesday = new Date(baseDate.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
