@@ -22,6 +22,8 @@ async function getTodos() {
     }
   })
 
+  console.log(results);
+
   const rawData = results.map(page => {
     return {
       "name": page.properties.Todo.title[0].text.content,
