@@ -35,6 +35,7 @@ async function getTodos() {
       "sat": page.properties.SAT.checkbox ? 1 : 0,
     }
   })
+  console.log(rawData);
 
   return rawData
 }
