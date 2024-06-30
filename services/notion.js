@@ -27,7 +27,7 @@ async function getTodos() {
   const rawData = results.map(page => {
     return {
       "name": page.properties.Todo.title[0].text.content,
-      "date": new Date(page.properties.date),
+      "date": new Date(page.properties.Date.date),
       "sun": page.properties.SUN.checkbox ? 1 : 0,
       "mon": page.properties.MON.checkbox ? 1 : 0,
       "tue": page.properties.TUE.checkbox ? 1 : 0,
