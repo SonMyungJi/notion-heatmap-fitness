@@ -15,17 +15,17 @@ async function getTodos() {
   const { results } = await notion.databases.query({
     database_id: `${database_id}`,
     filter: {
-      "timestamp": "created_time",
-      "created_time": {
-        "on_or_after": startDate
-      }
-    }
-  })
+      "timestamp": "date",
+      "date": {
+        on_or_after: startDate,
+      },
+    },
+  });
 
   const rawData = results.map(page => {
     return {
       "name": page.properties.Todo.title[0].text.content,
-      "date": new Date(page.created_time),
+      "date": new Date(page.date),
       "sun": page.properties.SUN.checkbox ? 1 : 0,
       "mon": page.properties.MON.checkbox ? 1 : 0,
       "tue": page.properties.TUE.checkbox ? 1 : 0,
