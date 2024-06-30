@@ -36,7 +36,7 @@ async function getTodos() {
     }
   })
 
-  console.log('Date', page.properties.Date);
+  console.log(page.properties.Date);
 
   return rawData
 }
