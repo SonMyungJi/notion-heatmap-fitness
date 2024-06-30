@@ -15,7 +15,7 @@ async function getTodos() {
   const { results } = await notion.databases.query({
     database_id: `${database_id}`,
     filter: {
-      "timestamp": "date",
+      "property": "Date",
       "date": {
         on_or_after: startDate,
       },
