@@ -15,12 +15,12 @@ async function getTodos() {
   const { results } = await notion.databases.query({
     database_id: `${database_id}`,
     filter: {
-      "property": "Date",
+      "property": "Created_Time",
       "date": {
-        on_or_after: startDate,
-      },
-    },
-  });
+        "on_or_after": startDate
+      }
+    }
+  })
 
   const rawData = results.map(page => {
     return {

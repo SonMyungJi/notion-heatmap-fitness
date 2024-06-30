@@ -40,7 +40,6 @@
         async function paintCalendar() {
             const response = await fetch('/api/weekly-todos');
             const dataSet = await response.json();
-            console.log(dataSet);
 
             const processedData = {};
 
@@ -105,7 +104,6 @@
                 count: names.length,
                 names: names.join(', ')
             }));
-            console.log(processedDataArray);
             
             const maxCount = Math.max(...processedDataArray.map(entry => entry.count));
         
